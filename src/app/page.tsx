@@ -12,10 +12,12 @@ const Home = async () => {
 
   return (
     <div className="justify-center w-full p-2 max-w-[768px] m-auto">
-      <div className=":sticky p-4 top-0">
-        <div className="backdrop-blur-md bg-opacity-50 bg-gray-200 flex justify-around items-center shadow-md z-50 flex-wrap p-2 rounded-3xl">
-          <div className="max-w-48">
-            <Image className="w-full" src={logoImg} alt="富士宮歩く博物館" />
+      <div className="sm:sticky py-2 top-2">
+        <div className="backdrop-blur-md bg-opacity-50 bg-gray-300 flex justify-around items-center shadow-md z-50 flex-wrap p-2 rounded-full bg-[url(/header_back.svg)]  bg-center bg-cover">
+          <div className="max-w-56 w-full">
+            <h1>
+              <Image src={logoImg} alt="富士宮歩く博物館" />
+            </h1>
           </div>
           <div className="flex justify-around flex-wrap gap-1 flex-grow font-medium">
             <div className="px-4 py-2 flex-1 text-center">
