@@ -13,7 +13,7 @@ const Home = async () => {
   return (
     <div className="justify-center w-full p-2 max-w-[768px] m-auto">
       <div className="sm:sticky py-2 top-2">
-        <div className="backdrop-blur-md bg-opacity-50 bg-gray-300 flex justify-around items-center shadow-md z-50 flex-wrap p-2 rounded-full bg-[url(/header_back.svg)]  bg-center bg-cover">
+        <div className="backdrop-blur-md bg-opacity-50 bg-gray-300 flex justify-around items-center shadow-md z-50 flex-wrap p-2 rounded-full bg-[url(/header_back.svg)]  bg-[center_bottom]  bg-contain bg-no-repeat">
           <div className="max-w-56 w-full">
             <h1>
               <Image src={logoImg} alt="富士宮歩く博物館" />
