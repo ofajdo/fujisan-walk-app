@@ -85,9 +85,12 @@ export function CourseList({ courses }: { courses: Course[] }) {
                         ポイント
                       </h3>
                       <ul className="flex justify-around">
-                        {course.points.map(({ point }) => {
+                        {course.points.map(({ point }, index) => {
                           return (
-                            <li className="py-2 px-3 bg-gray-100 rounded-full text-sm">
+                            <li
+                              className="py-2 px-3 bg-gray-100 rounded-full text-sm"
+                              key={index}
+                            >
                               {point.title}
                             </li>
                           );
