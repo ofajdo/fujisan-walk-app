@@ -1,14 +1,49 @@
 import { H1 } from "@/components/base/heading";
+import Link from "next/link";
+import { UsersGet } from "@/data/users";
+import { CoursesGet } from "@/data/courses";
+import { CourseList } from "@/components/course/course_list";
+import logoImg from "../assets/logo.svg";
+import Image from "next/image";
 
-export default function Home() {
+const Home = async () => {
+  const users = await UsersGet();
+  const courses = await CoursesGet();
+
   return (
-    <div className="justify-center w-full p-4 max-w-[768px] m-auto">
-      <H1 className="">富士宮市　歩く博物館</H1>
+    <div className="justify-center w-full p-2 max-w-[768px] m-auto">
+      <div className=":sticky p-4 top-0">
+        <div className="backdrop-blur-md bg-opacity-50 bg-gray-200 flex justify-around items-center shadow-md z-50 flex-wrap p-2 rounded-3xl">
+          <div className="max-w-48">
+            <Image className="w-full" src={logoImg} alt="富士宮歩く博物館" />
+          </div>
+          <div className="flex justify-around flex-wrap gap-1 flex-grow font-medium">
+            <div className="px-4 py-2 flex-1 text-center">
+              <Link href="course">コース一覧</Link>
+            </div>
+            <div className="px-4 py-2 flex-1 text-center">
+              <Link href="course">場所検索</Link>
+            </div>
+          </div>
+        </div>
+      </div>
       <div>
+        <CourseList courses={courses}></CourseList>
         <ol>
-          <li>Aルート</li>
+          <li>
+            <Link href="/course/a">Aルート</Link>
+          </li>
         </ol>
+        <ul>
+          {users.map((u) => (
+            <li key={u.id}>
+              {u.name} ({u.email})
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
-}
+};
+
+export default Home;

@@ -5,20 +5,99 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id       String @id @default(cuid())
-  name     String
-  email    String @unique
-  password String
+  id        String         @id @default(cuid())
+  name      String
+  email     String         @unique
+  password  String
+  locations UserLocation[]
 }
 
-model Courae {
-  id          String @id @default(cuid())
-  url         String
+model Course {
+  id          String         @id
+  name        String
   title       String
   description String
+  districts   String
+  distance    Int
+  time        Int
+  points      CoursePoint[]
+  locations   Location[]
+
+  startingPointId String
+  startingPoint StartingPoint @relation(fields: [startingPointId],references: [id])
+}
+
+model Location {
+  id           String           @id
+  number       Int
+  image        String
+  title        String
+  address String
+  google String
+  description  String
+  userAchieves UserLocation[]
+  topic        LocationTopics[]
+  qr Boolean
+  qrId String @default(cuid())
+  courseId     String
+  course       Course           @relation(fields: [courseId], references: [id])
+}
+
+model StartingPoint {
+  id           String           @id @default(cuid())
+  name String
+  address String
+  google String
+  course Course[]
+}
+
+
+model Point {
+  id          String         @id @default(cuid())
+  title       String
+  discription String?
+  course      CoursePoint[]
+}
+
+model UserLocation {
+  userId     String
+  locationId String
+  achievedAt DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id])
+  location Location @relation(fields: [locationId], references: [id])
+
+  @@id([userId, locationId])
+}
+
+model Topic {
+  id          String           @id @default(cuid())
+  name        String
+  description String
+  location    LocationTopics[]
+}
+
+model LocationTopics {
+  locationId String
+  topicId    String
+
+  location Location @relation(fields: [locationId], references: [id])
+  topic    Topic    @relation(fields: [topicId], references: [id])
+
+  @@id([locationId, topicId])
+}
+
+model CoursePoint {
+  courseId String
+  pointId  String
+
+  course Course @relation(fields: [courseId], references: [id])
+  point  Point  @relation(fields: [pointId], references: [id])
+
+  @@id([courseId, pointId])
 }
