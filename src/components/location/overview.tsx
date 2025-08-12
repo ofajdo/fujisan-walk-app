@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import { useState } from "react";
 
 export function Overview({ location }: { location: any }) {
@@ -21,21 +21,21 @@ export function Overview({ location }: { location: any }) {
       </div>
       <div className="flex-1 p-1 flex flex-col justify-around gap-2">
         <p className="text-center text-xs md:text-sm">
-          <span className="text-base font-medium pr-2">
-            {location?.course.name}
+          <span className="text-sm font-medium pr-2 font-mono">
+            {location?.course.name}-{location?.number}
           </span>
           {location?.course.title}
         </p>
-        <h2 className="font-medium text-xl md:text-2xl text-center text-balance">
-          <span className="font-mono">{location?.number}.</span>
+        <h2 className="font-medium text-lg md:text-2xl text-center text-balance">
           {location?.title}
         </h2>
         <div className="flex justify-center flex-wrap">
           <a
             target="_brank"
             href={location?.google}
-            className="text-center px-2 py-1 bg-blue-500 text-white rounded-full text-sm"
+            className="text-center px-2 py-1 bg-blue-500 text-white rounded-full text-xs flex items-center"
           >
+            <FaMapMarkerAlt className="h-[1.25em] w-[1.25em]" />
             Google Maps で開く
           </a>
         </div>

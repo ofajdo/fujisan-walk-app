@@ -84,7 +84,7 @@ export function CourseList({ courses }: { courses: Course[] }) {
                       {course.points.map(({ point }, index) => {
                         return (
                           <li
-                            className="py-2 px-3 bg-gray-100 rounded-full text-sm"
+                            className="py-2 px-3 bg-gray-200 rounded-full text-sm"
                             key={index}
                           >
                             {point.title}
