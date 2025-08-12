@@ -1,11 +1,9 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
 import { Overview } from "./overview";
 
 export function Detail({ location }: { location: any }) {
+  console.log();
   return (
     <div className="flex flex-col gap-3">
       <Overview location={location} />
