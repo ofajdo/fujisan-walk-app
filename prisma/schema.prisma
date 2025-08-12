@@ -37,13 +37,22 @@ model Location {
   number       Int
   image        String
   title        String
-  address String
+  address String?
   google String
   description  String
   userAchieves UserLocation[]
   topic        LocationTopics[]
+  culture LocationCulture[]
+  referenceId  String?
+  reference    Location?        @relation("LocationReference", fields: [referenceId], references: [id])
+  referencedBy Location[]       @relation("LocationReference")
+
+  nextId String?
+  next Location? @relation("LocationNext",fields: [nextId],references: [id])
+  before Location [] @relation("LocationNext")
+
   qr Boolean
-  qrId String @default(cuid())
+  qrId String @default(cuid()) @unique
   courseId     String
   course       Course           @relation(fields: [courseId], references: [id])
 }
@@ -100,4 +109,20 @@ model CoursePoint {
   point  Point  @relation(fields: [pointId], references: [id])
 
   @@id([courseId, pointId])
+}
+
+model LocationCulture {
+  locationId String
+  cultureId String
+
+  location Location @relation(fields: [locationId],references: [id])
+  culture Culture @relation(fields: [cultureId],references: [id])
+
+  @@id([locationId,cultureId])
+}
+
+model Culture {
+  id String @id @default(cuid())
+  name String
+  location LocationCulture[]
 }

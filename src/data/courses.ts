@@ -14,6 +14,5 @@ export const CoursesGet = async () => {
     },
   });
   courses.sort();
-  console.log(courses);
   return courses;
 };

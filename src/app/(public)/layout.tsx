@@ -1,17 +1,15 @@
-import { H1 } from "@/components/base/heading";
-import Link from "next/link";
-import { UsersGet } from "@/data/users";
-import { CoursesGet } from "@/data/courses";
-import { CourseList } from "@/components/course/course_list";
-import logoImg from "../assets/logo.svg";
 import Image from "next/image";
+import Link from "next/link";
 
-const Home = async () => {
-  const users = await UsersGet();
-  const courses = await CoursesGet();
+import logoImg from "../../assets/logo.svg";
 
+export default function PublicLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="justify-center w-full p-2 max-w-[768px] m-auto">
+    <div className="justify-center w-full p-1 max-w-[768px] m-auto">
       <div className="sm:sticky py-2 top-2">
         <div className="backdrop-blur-md bg-opacity-50 bg-gray-300 flex justify-around items-center shadow-md z-50 flex-wrap p-2 rounded-full bg-[url(/header_back.svg)]  bg-[center_bottom]  bg-contain bg-no-repeat">
           <div className="max-w-56 w-full">
@@ -29,23 +27,7 @@ const Home = async () => {
           </div>
         </div>
       </div>
-      <div>
-        <CourseList courses={courses}></CourseList>
-        <ol>
-          <li>
-            <Link href="/course/a">Aルート</Link>
-          </li>
-        </ol>
-        <ul>
-          {users.map((u) => (
-            <li key={u.id}>
-              {u.name} ({u.email})
-            </li>
-          ))}
-        </ul>
-      </div>
+      <div className="p-2">{children}</div>
     </div>
   );
-};
-
-export default Home;
+}
