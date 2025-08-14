@@ -37,8 +37,8 @@ model Location {
   number       Int
   image        String
   title        String
-  address String?
-  google String
+  latitude String
+  longitude String
   description  String
   userAchieves UserLocation[]
   topic        LocationTopics[]

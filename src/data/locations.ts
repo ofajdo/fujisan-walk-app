@@ -6,12 +6,10 @@ interface Location {
 }
 
 export async function LocationSerchById({ id }: Location) {
-  return await prisma.location.findUnique({
-    where: {
-      id: id,
-    },
-    include: {
-      course: true,
-    },
+  const location = await prisma.location.findUnique({
+    where: { id },
+    include: { course: true },
   });
+
+  return location;
 }

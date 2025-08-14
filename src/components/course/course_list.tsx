@@ -72,14 +72,14 @@ export function CourseList({ courses }: { courses: Course[] }) {
                   className="bg-white p-4 rounded-2xl max-w-lg w-full shadow-lg flex flex-col"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <h2 className="mb-1 p-1 text-center font-medium text-blue-900 text-xl">
+                  <h3 className="mb-1 p-1 text-center font-medium text-blue-900 text-xl">
                     見どころ
-                  </h2>
+                  </h3>
                   <p className="text-sm text-gray-800">{course.description}</p>
                   <div className="flex py-3 content-center justify-around">
-                    <h3 className="m-2 font-bold text-gray-700 text-sm">
+                    <h4 className="m-2 font-bold text-gray-700 text-sm">
                       ポイント
-                    </h3>
+                    </h4>
                     <ul className="flex justify-around">
                       {course.points.map(({ point }, index) => {
                         return (
