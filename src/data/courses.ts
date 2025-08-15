@@ -1,5 +1,6 @@
 "use server";
 import prisma from "@/lib/db";
+import { truncate } from "fs";
 
 export const CoursesGet = async () => {
   const courses = await prisma.course.findMany({
@@ -24,6 +25,7 @@ export const CourseGetById = async (id: string) => {
     },
     include: {
       startingPoint: true,
+      routes: true,
       points: {
         include: {
           point: true,

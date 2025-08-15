@@ -27,6 +27,7 @@ model Course {
   time        Int
   points      CoursePoint[]
   locations   Location[]
+  routes Route[]
 
   startingPointId String
   startingPoint StartingPoint @relation(fields: [startingPointId],references: [id])
@@ -37,9 +38,8 @@ model Location {
   number       Int
   image        String
   title        String
-  latitude String
-  longitude String
   description  String
+  place Route?
   userAchieves UserLocation[]
   topic        LocationTopics[]
   culture LocationCulture[]
@@ -62,9 +62,29 @@ model StartingPoint {
   name String
   address String
   google String
+  place Route?
   course Course[]
 }
 
+model Route {
+  id String @id @default(cuid())
+  name String?
+
+  sort DateTime @default(now())
+
+  latitude String
+  longitude String
+
+  locationId String? @unique
+  startingPointId String? @unique
+  courseId String
+
+  display Boolean
+
+  location Location? @relation(fields: [locationId],references: [id])
+  startingPoint StartingPoint? @relation(fields: [startingPointId],references: [id])
+  course Course? @relation(fields: [courseId],references: [id])
+}
 
 model Point {
   id          String         @id @default(cuid())
@@ -72,7 +92,6 @@ model Point {
   discription String?
   course      CoursePoint[]
 }
-
 model UserLocation {
   userId     String
   locationId String

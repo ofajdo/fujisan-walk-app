@@ -36,7 +36,7 @@ export function Overview({ location }: { location: any }) {
         <div className="flex justify-center flex-wrap">
           <a
             target="_brank"
-            href={`https://maps.google.co.jp/maps?ll=${location?.latitude},${location?.longitude}`}
+            // href={`https://maps.google.co.jp/maps?ll=${location?.place?.latitude},${location?.place?.longitude}`}
             className="text-center px-2 py-1.5 md:px-4 md:py-2 bg-blue-500 text-white rounded-full text-xs flex items-center"
           >
             <FaMapMarkerAlt className="h-[1.25em] w-[1.25em]" />
