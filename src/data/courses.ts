@@ -6,15 +6,27 @@ export const CoursesGet = async () => {
   const courses = await prisma.course.findMany({
     include: {
       startingPoint: true,
+      routes: {
+        orderBy: {
+          sort: "asc",
+        },
+      },
       points: {
         include: {
           point: true,
         },
       },
-      locations: true,
+      locations: {
+        orderBy: {
+          number: "asc",
+        },
+        include: {
+          course: true,
+          place: true,
+        },
+      },
     },
   });
-  courses.sort();
   return courses;
 };
 

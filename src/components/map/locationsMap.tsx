@@ -41,8 +41,7 @@ const RouteMap: React.FC = () => {
     <MapContainer
       center={currentPosition || route[0]} // 現在地が取れればそれを中央に
       zoom={13}
-      className="h-[40vh] min-h-64"
-      preferCanvas={true}
+      className="h-full w-full min-h-64"
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

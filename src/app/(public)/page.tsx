@@ -1,8 +1,27 @@
 import { CoursesGet } from "@/data/courses";
 import { CourseList } from "@/components/course/course_list";
+import type { Prisma } from "@prisma/client";
+
+type Course = Prisma.CourseGetPayload<{
+  include: {
+    startingPoint: true;
+    routes: true; // orderByは型に影響しないので true でOK
+    points: {
+      include: {
+        point: true;
+      };
+    };
+    locations: {
+      include: {
+        course: true;
+        place: true; // ここは null 許容される
+      };
+    };
+  };
+}>;
 
 const Home = async () => {
-  const courses = await CoursesGet();
+  const courses: Course[] = await CoursesGet();
 
   return <CourseList courses={courses}></CourseList>;
 };

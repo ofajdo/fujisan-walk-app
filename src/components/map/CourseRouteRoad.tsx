@@ -26,9 +26,5 @@ export function CourseRouteRoad({ course }: { course: Course }) {
   );
 
   console.log(course);
-  return (
-    <div className="flex flex-col gap-3">
-      <Map course={course} />
-    </div>
-  );
+  return <Map course={course} />;
 }

@@ -22,7 +22,9 @@ export function Detail({ location }: { location: Location }) {
   );
   return (
     <div className="flex flex-col gap-3">
-      <Overview location={location} />
+      <Overview location={location}>
+        <></>
+      </Overview>
       <p className="p-2 text-gray-700 text-sm">{location?.description}</p>
       <Map />
     </div>

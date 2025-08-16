@@ -5,7 +5,19 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { useState } from "react";
 import Link from "next/link";
 
-export function Overview({ location }: { location: any }) {
+import { Prisma } from "@prisma/client";
+type Location = Prisma.LocationGetPayload<{
+  include: {
+    course: true;
+  };
+}>;
+export function Overview({
+  location,
+  children,
+}: {
+  location: Location;
+  children: React.ReactNode;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="flex flex-wrap">
@@ -33,16 +45,7 @@ export function Overview({ location }: { location: any }) {
         <h2 className="font-medium text-lg md:text-2xl text-center text-balance cursor-pointer hover:underline">
           <Link href={`/location/${location?.id}`}>{location?.title}</Link>
         </h2>
-        <div className="flex justify-center flex-wrap">
-          <a
-            target="_brank"
-            // href={`https://maps.google.co.jp/maps?ll=${location?.place?.latitude},${location?.place?.longitude}`}
-            className="text-center px-2 py-1.5 md:px-4 md:py-2 bg-blue-500 text-white rounded-full text-xs flex items-center"
-          >
-            <FaMapMarkerAlt className="h-[1.25em] w-[1.25em]" />
-            Google Maps で開く
-          </a>
-        </div>
+        <div className="flex justify-center flex-wrap">{children}</div>
       </div>
       {/* モーダル */}
       {isOpen && (
