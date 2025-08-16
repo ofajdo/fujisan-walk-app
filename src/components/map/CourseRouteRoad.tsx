@@ -4,11 +4,18 @@ import React from "react";
 
 import { LatLngExpression } from "leaflet";
 
-export function CourseRouteRoad({
-  route,
-}: {
-  route: { latitude: string; longitude: string }[];
-}) {
+import { Prisma } from "@prisma/client";
+type Course = Prisma.CourseGetPayload<{
+  include: {
+    routes: true;
+    locations: {
+      include: {
+        place: true;
+      };
+    };
+  };
+}>;
+export function CourseRouteRoad({ course }: { course: Course }) {
   const Map = React.useMemo(
     () =>
       dynamic(() => import("./route"), {
@@ -17,12 +24,11 @@ export function CourseRouteRoad({
       }),
     []
   );
-  const fitRoute: LatLngExpression[] = route.map((place) => {
-    return [Number(place.latitude), Number(place.longitude)];
-  });
+
+  console.log(course);
   return (
     <div className="flex flex-col gap-3">
-      <Map route={fitRoute} />
+      <Map course={course} />
     </div>
   );
 }

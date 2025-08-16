@@ -3,7 +3,15 @@ import dynamic from "next/dynamic";
 import React from "react";
 import { Overview } from "./overview";
 
-export function Detail({ location }: { location: any }) {
+import { Prisma } from "@prisma/client";
+
+type Location = Prisma.LocationGetPayload<{
+  include: {
+    course: true;
+  };
+}>;
+
+export function Detail({ location }: { location: Location }) {
   const Map = React.useMemo(
     () =>
       dynamic(() => import("../../components/map/locationsMap"), {

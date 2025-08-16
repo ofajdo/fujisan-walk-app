@@ -25,7 +25,11 @@ export const CourseGetById = async (id: string) => {
     },
     include: {
       startingPoint: true,
-      routes: true,
+      routes: {
+        orderBy: {
+          sort: "asc",
+        },
+      },
       points: {
         include: {
           point: true,
@@ -37,6 +41,7 @@ export const CourseGetById = async (id: string) => {
         },
         include: {
           course: true,
+          place: true,
         },
       },
     },

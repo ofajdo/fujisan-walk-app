@@ -1,20 +1,15 @@
 "use client";
 
-interface Point {
-  id: String;
-  title: String;
-}
-
-interface Course {
-  id: String;
-  name: String;
-  title: String;
-  description: String;
-  districts: String;
-  distance: Number;
-  time: Number;
-  points: { point: Point }[];
-}
+import type { Prisma } from "@prisma/client";
+type Course = Prisma.CourseGetPayload<{
+  include: {
+    points: {
+      include: {
+        point: true;
+      };
+    };
+  };
+}>;
 
 import { FaWalking } from "react-icons/fa";
 import { IoMdTime } from "react-icons/io";

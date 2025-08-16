@@ -23,7 +23,7 @@ export default async function Course({
           );
         })}
       </ol>
-      {course && <CourseRouteRoad route={course.routes} />}
+      {course && <CourseRouteRoad course={course} />}
     </>
   );
 }
