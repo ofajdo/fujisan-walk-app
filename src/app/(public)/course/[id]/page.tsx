@@ -12,11 +12,11 @@ export default async function Course({
 
   return (
     <>
-      <ol className="flex flex-col gap-8">
+      <ol className="flex flex-col gap-4">
         {course?.locations.map((location, index) => {
           return (
             <li key={index}>
-              <div className="w-full p-2 bg-gray-100 rounded-xl shadow-md">
+              <div className="w-full p-2 bg-gray-100 rounded-xl shadow">
                 <Overview location={location}>
                   <></>
                 </Overview>
