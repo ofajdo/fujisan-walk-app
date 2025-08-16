@@ -17,7 +17,9 @@ export default async function Course({
           return (
             <li key={index}>
               <div className="w-full p-2 bg-gray-100 rounded-xl shadow-md">
-                <Overview location={location}>あ</Overview>
+                <Overview location={location}>
+                  <></>
+                </Overview>
               </div>
             </li>
           );
