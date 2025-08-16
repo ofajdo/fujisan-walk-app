@@ -29,7 +29,7 @@ export default async function Course({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const course: Course = await CourseGetById(id);
+  const course: Course | null = await CourseGetById(id);
 
   return (
     <>
@@ -37,7 +37,7 @@ export default async function Course({
         {course && <CourseRouteRoad course={course} />}
       </div>
       <div className="flex-1 overflow-y-scroll p-2">
-        <CourseItem course={course} />
+        <div className="p-1">{course && <CourseItem course={course} />}</div>
         <ol className="flex flex-col">
           {course?.locations.map((location, index) => {
             return (
