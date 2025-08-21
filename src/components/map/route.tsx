@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MapContainer,
   Marker,
@@ -28,7 +28,6 @@ function RouteMap({ course }: { course: Course }) {
   const [currentPosition, setCurrentPosition] =
     useState<LatLngExpression | null>(null);
   const [heading, setHeading] = useState<number | null>(null);
-
   useEffect(() => {
     if (!navigator.geolocation) return;
 
@@ -55,14 +54,40 @@ function RouteMap({ course }: { course: Course }) {
       }
     );
 
-    return () => navigator.geolocation.clearWatch(watchId);
+    // DeviceOrientation API
+    const handleOrientation = (event: DeviceOrientationEvent) => {
+      if (typeof event.alpha === "number" && !isNaN(event.alpha)) {
+        // iOSはalphaが磁北基準、Androidは真北基準の場合あり
+        setHeading(event.alpha);
+      }
+    };
+
+    // iOSの許可取得
+    const requestPermission = async () => {
+      if (
+        typeof window.DeviceOrientationEvent !== "undefined" &&
+        typeof (window.DeviceOrientationEvent as any).requestPermission ===
+          "function"
+      ) {
+        await (window.DeviceOrientationEvent as any).requestPermission();
+      }
+    };
+
+    window.addEventListener("deviceorientation", handleOrientation, true);
+
+    // iOS用: 初回タップで許可を促す
+    window.addEventListener("click", requestPermission, { once: true });
+
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+      window.removeEventListener("deviceorientation", handleOrientation, true);
+      window.removeEventListener("click", requestPermission);
+    };
   }, []);
 
-  // headingが変わるたびにアイコンを再生成
-  const currentLocationIcon = useMemo(
-    () =>
-      L.divIcon({
-        html: `
+  // 方位を示す矢印アイコン
+  const currentLocationIcon = L.divIcon({
+    html: `
       <svg width="24" height="24" viewBox="0 0 24 24" style="transform: rotate(${
         heading ?? 0
       }deg);">
@@ -70,12 +95,10 @@ function RouteMap({ course }: { course: Course }) {
         <polygon points="12,4 16,16 12,13 8,16" fill="white"/>
       </svg>
     `,
-        className: "",
-        iconSize: [24, 24],
-        iconAnchor: [12, 12],
-      }),
-    [heading]
-  );
+    className: "",
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+  });
 
   const route: LatLngExpression[] = course.routes.map((place) => [
     Number(place.latitude),
