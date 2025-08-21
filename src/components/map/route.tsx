@@ -28,7 +28,6 @@ function RouteMap({ course }: { course: Course }) {
   const [currentPosition, setCurrentPosition] =
     useState<LatLngExpression | null>(null);
   const [heading, setHeading] = useState<number | null>(null);
-
   useEffect(() => {
     if (!navigator.geolocation) return;
 
@@ -55,7 +54,36 @@ function RouteMap({ course }: { course: Course }) {
       }
     );
 
-    return () => navigator.geolocation.clearWatch(watchId);
+    // DeviceOrientation API
+    const handleOrientation = (event: DeviceOrientationEvent) => {
+      if (typeof event.alpha === "number" && !isNaN(event.alpha)) {
+        // iOSはalphaが磁北基準、Androidは真北基準の場合あり
+        setHeading(event.alpha);
+      }
+    };
+
+    // iOSの許可取得
+    const requestPermission = async () => {
+      // @ts-ignore
+      if (
+        typeof window.DeviceOrientationEvent !== "undefined" &&
+        typeof (window.DeviceOrientationEvent as any).requestPermission ===
+          "function"
+      ) {
+        await (window.DeviceOrientationEvent as any).requestPermission();
+      }
+    };
+
+    window.addEventListener("deviceorientation", handleOrientation, true);
+
+    // iOS用: 初回タップで許可を促す
+    window.addEventListener("click", requestPermission, { once: true });
+
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+      window.removeEventListener("deviceorientation", handleOrientation, true);
+      window.removeEventListener("click", requestPermission);
+    };
   }, []);
 
   // headingが変わるたびにアイコンを再生成
