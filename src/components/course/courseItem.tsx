@@ -35,7 +35,7 @@ export function CourseItem({ course }: { course: Course }) {
       </div>
       <div className="flex-grow px-1">
         <h2 className="text-2xl text-center font-medium cursor-pointer hover:underline text-balance">
-          <Link href={`course/${course.id}`}>{course.title}</Link>
+          <Link href={`/course/${course.id}`}>{course.title}</Link>
         </h2>
         <div className="p-2">
           <p
@@ -62,7 +62,7 @@ export function CourseItem({ course }: { course: Course }) {
       {/* モーダル */}
       {isOpen && (
         <div
-          className="fixed p-4 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          className="fixed p-4 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[2050]"
           onClick={() => setIsOpen(false)}
         >
           <div

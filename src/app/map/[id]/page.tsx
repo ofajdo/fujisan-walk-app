@@ -1,7 +1,8 @@
 import { CourseItem } from "@/components/course/courseItem";
-import { Overview } from "@/components/location/overview";
 import { CourseRouteRoad } from "@/components/map/CourseRouteRoad";
 import { CourseGetById } from "@/data/courses";
+import React from "react";
+import LocationList from "@/components/map/locationList";
 
 import type { Prisma } from "@prisma/client";
 
@@ -38,19 +39,7 @@ export default async function Course({
       </div>
       <div className="flex-1 overflow-y-scroll p-2">
         <div className="p-1">{course && <CourseItem course={course} />}</div>
-        <ol className="flex flex-col">
-          {course?.locations.map((location, index) => {
-            return (
-              <li key={index}>
-                <div className="w-full p-1 border-b-2">
-                  <Overview location={location}>
-                    <></>
-                  </Overview>
-                </div>
-              </li>
-            );
-          })}
-        </ol>
+        <LocationList course={course} />
       </div>
     </>
   );
