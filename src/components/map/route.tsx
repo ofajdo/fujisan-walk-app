@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MapContainer,
   Marker,
@@ -24,10 +24,17 @@ type Course = Prisma.CourseGetPayload<{
   };
 }>;
 
+const currentLocationIcon = L.divIcon({
+  html: ``,
+  className: "bg-blue-600 w-[18px] h-[18px] rounded-full border-2 border-white",
+  iconSize: [18, 18],
+  iconAnchor: [9, 9],
+});
+
 function RouteMap({ course }: { course: Course }) {
   const [currentPosition, setCurrentPosition] =
     useState<LatLngExpression | null>(null);
-  const [heading, setHeading] = useState<number | null>(null);
+
   useEffect(() => {
     if (!navigator.geolocation) return;
 
@@ -37,12 +44,6 @@ function RouteMap({ course }: { course: Course }) {
           position.coords.latitude,
           position.coords.longitude,
         ]);
-        if (
-          typeof position.coords.heading === "number" &&
-          !isNaN(position.coords.heading)
-        ) {
-          setHeading(position.coords.heading);
-        }
       },
       (error) => {
         console.error("現在地の取得に失敗しました:", error);
@@ -54,56 +55,8 @@ function RouteMap({ course }: { course: Course }) {
       }
     );
 
-    // DeviceOrientation API
-    const handleOrientation = (event: DeviceOrientationEvent) => {
-      if (typeof event.alpha === "number" && !isNaN(event.alpha)) {
-        // iOSはalphaが磁北基準、Androidは真北基準の場合あり
-        setHeading(event.alpha);
-      }
-    };
-
-    // iOSの許可取得
-    const requestPermission = async () => {
-      // @ts-ignore
-      if (
-        typeof window.DeviceOrientationEvent !== "undefined" &&
-        typeof (window.DeviceOrientationEvent as any).requestPermission ===
-          "function"
-      ) {
-        await (window.DeviceOrientationEvent as any).requestPermission();
-      }
-    };
-
-    window.addEventListener("deviceorientation", handleOrientation, true);
-
-    // iOS用: 初回タップで許可を促す
-    window.addEventListener("click", requestPermission, { once: true });
-
-    return () => {
-      navigator.geolocation.clearWatch(watchId);
-      window.removeEventListener("deviceorientation", handleOrientation, true);
-      window.removeEventListener("click", requestPermission);
-    };
+    return () => navigator.geolocation.clearWatch(watchId);
   }, []);
-
-  // headingが変わるたびにアイコンを再生成
-  const currentLocationIcon = useMemo(
-    () =>
-      L.divIcon({
-        html: `
-      <svg width="24" height="24" viewBox="0 0 24 24" style="transform: rotate(${
-        heading ?? 0
-      }deg);">
-        <circle cx="12" cy="12" r="9" fill="#2563eb" stroke="white" stroke-width="2"/>
-        <polygon points="12,4 16,16 12,13 8,16" fill="white"/>
-      </svg>
-    `,
-        className: "",
-        iconSize: [24, 24],
-        iconAnchor: [12, 12],
-      }),
-    [heading]
-  );
 
   const route: LatLngExpression[] = course.routes.map((place) => [
     Number(place.latitude),
