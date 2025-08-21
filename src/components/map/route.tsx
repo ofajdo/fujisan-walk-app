@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   MapContainer,
   Marker,
@@ -58,9 +58,11 @@ function RouteMap({ course }: { course: Course }) {
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
-  // 方位を示す矢印アイコン
-  const currentLocationIcon = L.divIcon({
-    html: `
+  // headingが変わるたびにアイコンを再生成
+  const currentLocationIcon = useMemo(
+    () =>
+      L.divIcon({
+        html: `
       <svg width="24" height="24" viewBox="0 0 24 24" style="transform: rotate(${
         heading ?? 0
       }deg);">
@@ -68,10 +70,12 @@ function RouteMap({ course }: { course: Course }) {
         <polygon points="12,4 16,16 12,13 8,16" fill="white"/>
       </svg>
     `,
-    className: "",
-    iconSize: [24, 24],
-    iconAnchor: [12, 12],
-  });
+        className: "",
+        iconSize: [24, 24],
+        iconAnchor: [12, 12],
+      }),
+    [heading]
+  );
 
   const route: LatLngExpression[] = course.routes.map((place) => [
     Number(place.latitude),
