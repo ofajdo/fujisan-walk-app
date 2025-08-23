@@ -1,6 +1,9 @@
+import { CourseItem } from "@/components/course/courseItem";
 import { Overview } from "@/components/location/overview";
 import { CourseRouteRoad } from "@/components/map/CourseRouteRoad";
 import { CourseGetById } from "@/data/courses";
+import LetsStart from "@/components/course/letsStart";
+import React from "react";
 
 export default async function Course({
   params,
@@ -10,8 +13,15 @@ export default async function Course({
   const { id } = await params;
   const course = await CourseGetById(id);
 
+  if (!course) {
+    return <div className="p-4">コースが見つかりませんでした。</div>;
+  }
   return (
-    <>
+    <div>
+      <div className="p-1 my-4">
+        {course && <CourseItem course={course} />}
+        <LetsStart course={course} />
+      </div>
       <ol className="flex flex-col gap-4">
         {course?.locations.map((location, index) => {
           return (
@@ -26,6 +36,6 @@ export default async function Course({
         })}
       </ol>
       {course && <CourseRouteRoad course={course} />}
-    </>
+    </div>
   );
 }

@@ -5,6 +5,7 @@ import React from "react";
 import LocationList from "@/components/map/locationList";
 
 import type { Prisma } from "@prisma/client";
+import CourseMap from "@/components/map/CourseMap";
 
 type Course = Prisma.CourseGetPayload<{
   include: {
@@ -34,13 +35,7 @@ export default async function Course({
 
   return (
     <>
-      <div className="h-full w-full flex-1">
-        {course && <CourseRouteRoad course={course} />}
-      </div>
-      <div className="flex-1 overflow-y-scroll p-2">
-        <div className="p-1">{course && <CourseItem course={course} />}</div>
-        <LocationList course={course} />
-      </div>
+      <CourseMap course={course!} />
     </>
   );
 }

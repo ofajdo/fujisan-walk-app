@@ -3,6 +3,19 @@
 import { Prisma } from "@prisma/client";
 import { Overview } from "@/components/location/overview";
 import React from "react";
+import WalkedButton from "./walked";
+
+import { locationsDB } from "@/lib/localdb";
+
+import { useLiveQuery } from "dexie-react-hooks";
+
+import { LocationSerchById } from "@/data/locations";
+
+type Location = Prisma.LocationGetPayload<{
+  include: {
+    course: true;
+  };
+}>;
 
 type Course = Prisma.CourseGetPayload<{
   include: {
@@ -23,22 +36,51 @@ type Course = Prisma.CourseGetPayload<{
 }>;
 
 const LocationList = ({ course }: { course: Course | null }) => {
+  const items = useLiveQuery(() => locationsDB.items.toArray()) || [];
+  const [locations, setLocations] = React.useState<Location[] | null>(null);
+
+  React.useEffect(() => {
+    const fetchLocations = async () => {
+      if (!items || items.length === 0) {
+        setLocations([]);
+        return;
+      }
+      const locationPromises = items.map((item) => LocationSerchById(item));
+      const resolvedLocations = await Promise.all(locationPromises);
+      setLocations(
+        resolvedLocations.filter((loc): loc is Location => loc !== null)
+      );
+    };
+    fetchLocations();
+  }, [items]);
+
+  console.log("locations from db", locations);
+
   return (
     <ol className="flex flex-col">
       {course?.locations.map((location, index) => {
         return (
           <li key={index}>
-            <div className={`w-full p-1 border-b-2`}>
+            <div
+              className={`w-full p-2 ${
+                !!locations?.some((loc) => loc.id === location.id) &&
+                "opacity-75"
+              }`}
+            >
               <Overview location={location}>
-                <button
-                  className="py-1.5 px-3 text-sm bg-blue-600 font-medium text-white rounded-full"
-                  onClick={() => {
-                    // ここに歩いたときの処理を追加
-                    console.log(`歩いた！: ${location}`);
+                <WalkedButton
+                  location={location}
+                  onWalked={() => {
+                    if (locations?.some((loc) => loc.id === location.id)) {
+                      locationsDB.items.delete(location.id);
+                    } else {
+                      locationsDB.items.add({ id: location.id });
+                    }
                   }}
-                >
-                  歩いた！
-                </button>
+                  walked={
+                    !!locations?.some((loc) => loc.id === location.id) || false
+                  }
+                />
               </Overview>
             </div>
           </li>

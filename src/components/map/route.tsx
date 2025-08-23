@@ -75,13 +75,21 @@ function RouteMap({ course }: { course: Course }) {
 
       <Polyline positions={route} />
 
-      {course.routes.map((place, index) =>
-        place.display ? (
-          <Marker position={route[index]} key={index}>
-            <Popup>{place.name}</Popup>
+      {course.routes.map((place, index) => {
+        const icon = L.divIcon({
+          html: `${place.name?.charAt(0)}`,
+          className:
+            "rounded-full bg-blue-700 text-white text-lg font-mono text-center leading-[24px]",
+          iconSize: [24, 24],
+          iconAnchor: [12, 12],
+        });
+
+        return place.display ? (
+          <Marker position={route[index]} key={index} icon={icon}>
+            <Popup>{place.title}</Popup>
           </Marker>
-        ) : null
-      )}
+        ) : null;
+      })}
 
       {course.locations.map((location, index) => {
         if (!location.place) return null;
@@ -94,7 +102,9 @@ function RouteMap({ course }: { course: Course }) {
         });
         return (
           <Marker position={ToLatLng(location.place)} icon={icon} key={index}>
-            <Popup>{location.title}</Popup>
+            <Popup>
+              <div>{location.title}</div>
+            </Popup>
           </Marker>
         );
       })}

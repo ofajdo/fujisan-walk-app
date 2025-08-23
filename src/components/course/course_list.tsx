@@ -23,7 +23,7 @@ import { CourseItem } from "./courseItem";
 
 export function CourseList({ courses }: { courses: Course[] }) {
   return (
-    <ol className="w-full">
+    <ol className="w-full flex flex-col gap-4">
       {courses?.map((course: Course, index) => {
         return (
           <li key={index} className="p-4 bg-gray-100 rounded-xl shadow-md">

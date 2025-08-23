@@ -30,8 +30,13 @@ export function CourseItem({ course }: { course: Course }) {
 
   return (
     <div className="w-full flex flex-col sm:flex-row">
-      <div className="text-blue-500 text-3xl sm:text-5xl font-bold px-2 grid place-items-center">
-        <span className="">{course.name}</span>
+      <div className="grid place-items-center">
+        <div className="flex justify-center sm:flex-col items-center gap-2 text-xs text-center">
+          <span className="text-blue-500 text-4xl sm:text-5xl font-bold px-2">
+            {course.name}
+          </span>
+          {course.districts}地区
+        </div>
       </div>
       <div className="flex-grow px-1">
         <h2 className="text-2xl text-center font-medium cursor-pointer hover:underline text-balance">
@@ -73,9 +78,9 @@ export function CourseItem({ course }: { course: Course }) {
               見どころ
             </h3>
             <p className="text-sm text-gray-800">{course.description}</p>
-            <div className="flex py-3 content-center justify-around">
+            <div className="flex py-3 content-center justify-around flex-wrap items-center gap-1">
               <h4 className="m-2 font-bold text-gray-700 text-sm">ポイント</h4>
-              <ul className="flex justify-around">
+              <ul className="flex justify-around flex-wrap">
                 {course.points?.length ? (
                   course.points.map(({ point }, index) => (
                     <li
