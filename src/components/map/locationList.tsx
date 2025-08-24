@@ -58,13 +58,15 @@ const LocationList = ({ course }: { course: Course | null }) => {
     <ol className="flex flex-col">
       {course?.locations.map((location, index) => {
         return (
-          <li key={index}>
-            <div
-              className={`w-full p-2 ${
-                !!locations?.some((loc) => loc.id === location.id) &&
-                "opacity-75"
-              }`}
-            >
+          <li
+            key={index}
+            className={`${
+              !!locations?.some((loc) => loc.id === location.id)
+                ? "opacity-50 order-2"
+                : "order-1"
+            }`}
+          >
+            <div className={`w-full p-2`}>
               <Overview location={location}>
                 <WalkedButton
                   location={location}
