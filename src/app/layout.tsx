@@ -11,8 +11,7 @@ export const metadata: Metadata = {
   description:
     "非公式の富士宮市歩く博物館のデジタル版です。歩くルートをデジタルのマップで見ることができます。富士宮市教育委員会のパンフレットを参考にしています",
   verification: {
-    google:
-      '<meta name="google-site-verification" content="pN0H3UKaXSIYAoZW9gR1IEyLjFql2k2mErkNYOn9Rbc" />',
+    google: "pN0H3UKaXSIYAoZW9gR1IEyLjFql2k2mErkNYOn9Rbc",
   },
 };
 
