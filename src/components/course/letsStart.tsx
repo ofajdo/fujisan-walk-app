@@ -62,7 +62,7 @@ export default function LetsStart({ course }: { course: Course }) {
             </div>
             <PleaseText />
             <div>
-              <p className="text-center">着いたら...</p>
+              <p className="text-center">スタート地点に着いたら...</p>
               <div className="flex justify-center py-1.5">
                 <Link
                   href={`/map/${course.id}`}
