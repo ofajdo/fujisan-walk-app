@@ -12,15 +12,21 @@ type Course = Prisma.CourseGetPayload<{
     };
   };
 }>;
-export function CourseRouteRoad({ course }: { course: Course }) {
+export function LocationsRoad({
+  course,
+  location_index,
+}: {
+  course: Course;
+  location_index: number;
+}) {
   const Map = React.useMemo(
     () =>
-      dynamic(() => import("./route"), {
+      dynamic(() => import("./locationsMap"), {
         loading: () => <p>A map is loading</p>,
         ssr: false,
       }),
     []
   );
 
-  return <Map course={course} />;
+  return <Map course={course} location_index={location_index} />;
 }

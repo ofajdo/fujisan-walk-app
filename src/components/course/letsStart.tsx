@@ -41,21 +41,21 @@ export default function LetsStart({ course }: { course: Course }) {
           onClick={() => setIsOpen(false)}
         >
           <div
-            className="bg-white p-4 rounded-2xl max-w-lg w-full shadow-lg flex flex-col content-around items-around gap-3"
+            className="bg-white p-2 rounded-2xl max-w-lg w-full shadow-lg flex flex-col content-around items-around gap-1"
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="mb-1 p-1 text-center font-medium text-blue-900 text-xl">
               スタート地点に行く
             </h3>
-            <div className="flex py-3 content-center justify-around flex-wrap items-center gap-1">
+            <div className="flex py-1 content-center justify-around flex-wrap items-center gap-1">
               <h4 className="font-bold text-gray-700 text-sm">
                 {course.startingPoint.name}
               </h4>
               <ul className="flex justify-around flex-wrap gap-2">
-                <li className="py-2 px-3 bg-gray-200 rounded-full text-sm">
+                <li className="py-1 px-3 bg-gray-200 rounded-full text-sm">
                   <a href={course.startingPoint.google}>GoogleMap</a>
                 </li>
-                <li className="py-2 px-3 bg-gray-200 rounded-full text-sm">
+                <li className="py-1 px-3 bg-gray-200 rounded-full text-sm">
                   {course.startingPoint.address}
                 </li>
               </ul>

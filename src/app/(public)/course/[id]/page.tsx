@@ -4,6 +4,7 @@ import { CourseRouteRoad } from "@/components/map/CourseRouteRoad";
 import { CourseGetById } from "@/data/courses";
 import LetsStart from "@/components/course/letsStart";
 import React from "react";
+import Link from "next/link";
 
 export default async function Course({
   params,
@@ -28,14 +29,19 @@ export default async function Course({
             <li key={index}>
               <div className="w-full p-2 bg-gray-100 rounded-xl shadow">
                 <Overview location={location}>
-                  <></>
+                  <div>
+                    <Link
+                      href={`https://www.google.com/maps/@?api=1&map_action=map&center=${location.place?.latitude},${location.place?.longitude}&zoom=18`}
+                    >
+                      Googleマップで開く
+                    </Link>
+                  </div>
                 </Overview>
               </div>
             </li>
           );
         })}
       </ol>
-      {course && <CourseRouteRoad course={course} />}
     </div>
   );
 }

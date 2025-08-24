@@ -13,7 +13,7 @@ const PleaseText = () => (
     <h3 className="mb-1 p-1 text-center font-medium text-blue-900 text-xl">
       お願い
     </h3>
-    <ol className="list-decimal list-inside space-y-3 line-height-relaxed p-3 text-sm rounded-md bg-gray-100">
+    <ol className="list-decimal list-inside space-y-2.5 line-height-relaxed p-4 text-xs rounded-md bg-gray-100 md:text-sm">
       {pleaseTextItems.map((item, idx) => (
         <li key={idx}>{item}</li>
       ))}

@@ -48,13 +48,11 @@ const LocationList = ({ course }: { course: Course | null }) => {
       const locationPromises = items.map((item) => LocationSerchById(item));
       const resolvedLocations = await Promise.all(locationPromises);
       setLocations(
-        resolvedLocations.filter((loc): loc is Location => loc !== null)
+        resolvedLocations.filter((loc) => loc !== null) as Location[]
       );
     };
     fetchLocations();
   }, [items]);
-
-  console.log("locations from db", locations);
 
   return (
     <ol className="flex flex-col">

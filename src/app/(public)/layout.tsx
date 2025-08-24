@@ -29,9 +29,10 @@ export default function PublicLayout({
                 className="flex justify-center items-center hover:underline gap-1"
               >
                 <FaRoute className="h-[1.25em] w-[1.25em]" />
-                コース
+                コース一覧
               </Link>
             </div>
+            {/*
             <div className="p-1 flex-1 text-center">
               <Link
                 href="/auth"
@@ -47,9 +48,10 @@ export default function PublicLayout({
                 className="flex justify-center items-center hover:underline gap-1"
               >
                 <IoSearchSharp className="h-[1.25em] w-[1.25em]" />
-                検索
               </Link>
+              検索
             </div>
+            */}
           </div>
         </div>
       </div>
