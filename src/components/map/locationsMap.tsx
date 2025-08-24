@@ -70,7 +70,10 @@ function RouteMap({
   ]);
 
   const ToLatLng = (place: { latitude: string; longitude: string }) =>
-    [Number(place.latitude), Number(place.longitude)] as LatLngExpression;
+    [
+      Number(place?.latitude || "35.222091619682374"),
+      Number(place?.longitude || "138.62160835395053"),
+    ] as LatLngExpression;
 
   return (
     <MapContainer

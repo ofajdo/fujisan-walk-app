@@ -22,6 +22,9 @@ export async function LocationSerchById({ id }: Location) {
       culture: {
         include: { culture: true },
       },
+      topic: {
+        include: { topic: true },
+      },
     },
   });
 

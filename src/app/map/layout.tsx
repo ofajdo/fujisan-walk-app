@@ -14,7 +14,7 @@ export default function MapLayout({ children }: { children: React.ReactNode }) {
           </h1>
         </div>
       </div>
-      <div className="flex flex-grow w-full flex-col sm:flex-row">
+      <div className="flex flex-grow w-full flex-col sm:flex-row overflow-hidden">
         {children}
       </div>
     </div>
