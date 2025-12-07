@@ -14,6 +14,7 @@ export const CoursesGet = async () => {
         orderBy: {
           sort: "asc",
         },
+        where: { display: true },
       },
       points: {
         include: {
@@ -52,6 +53,7 @@ export const CourseGetById = async (id: string) => {
         orderBy: {
           sort: "asc",
         },
+        where: { display: true },
       },
       points: {
         include: {
