@@ -64,7 +64,14 @@ export const MapClient = ({
 
     mapRef.current = map;
 
-    map.addControl(new NavigationControl({ showCompass: false }), "top-left");
+    map.addControl(
+      new NavigationControl({
+        visualizePitch: true,
+        showZoom: true,
+        showCompass: true,
+      }),
+      "top-left"
+    );
 
     const geolocate = new GeolocateControl({
       positionOptions: {
