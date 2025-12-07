@@ -49,14 +49,15 @@ export const MapClient = ({
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const cleanupRef = useRef<(() => void) | null>(null);
+  const mapStyle = process.env.NEXT_PUBLIC_MAP_STYLE!;
 
   useEffect(() => {
+    console.log(mapStyle);
     if (!mapContainerRef.current || mapRef.current) return;
 
     const map = new maplibregl.Map({
       container: mapContainerRef.current,
-      style:
-        "https://api.maptiler.com/maps/019ad95c-3966-7e31-84ec-7e186e285757/style.json?key=ylcgFCpLu3EKnFshv302",
+      style: mapStyle,
       center: center,
       zoom: 16,
     });
