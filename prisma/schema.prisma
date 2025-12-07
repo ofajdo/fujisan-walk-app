@@ -6,6 +6,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Course {
@@ -72,7 +73,7 @@ model Route {
   startingPointId String? @unique
   courseId String
 
-  display Boolean
+  display Boolean @default(true)
 
   location Location? @relation(fields: [locationId],references: [id])
   startingPoint StartingPoint? @relation(fields: [startingPointId],references: [id])
