@@ -11,6 +11,7 @@ datasource db {
 
 model Course {
   id          String         @id
+  date DateTime @default(now())
   name        String
   title       String
   description String
@@ -28,6 +29,7 @@ model Course {
 model Location {
   id           String           @id
   number       Int
+  date DateTime @default(now())
   image        String
   title        String
   description  String
