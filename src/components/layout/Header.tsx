@@ -63,7 +63,7 @@ export async function CourseMenu() {
       {courses.map((course) => (
         <div key={course.id} className="text-sm font-normal">
           <Link
-            href={`/course/${course.id}`}
+            href={`/map/${course.id}`}
             className="hover:underline line-clamp-1"
           >
             <span className="p-1 font-medium font-mono text-base">

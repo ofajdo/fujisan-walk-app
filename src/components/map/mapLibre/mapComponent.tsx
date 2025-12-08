@@ -52,7 +52,6 @@ export const MapClient = ({
   const mapStyle = process.env.NEXT_PUBLIC_MAP_STYLE!;
 
   useEffect(() => {
-    console.log(mapStyle);
     if (!mapContainerRef.current || mapRef.current) return;
 
     const map = new maplibregl.Map({

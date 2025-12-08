@@ -1,5 +1,6 @@
 import { Detail } from "@/components/location/Detail";
 import { LocationSerchById, LocationsGet } from "@/data/locations";
+import { Metadata } from "next";
 import Link from "next/link";
 
 const locations = await LocationsGet();
@@ -8,6 +9,20 @@ export const generateStaticParams = () => {
     id: l.id,
   }));
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const location = locations.find((l) => l.id === id);
+
+  return {
+    title: `${location?.title} - 富士宮市歩く博物館デジタル`,
+    description: `${location?.course?.name} ${location?.course?.title} - ${location?.description}`,
+  };
+}
 
 export default async function Location({
   params,
@@ -26,13 +41,7 @@ export default async function Location({
           className="flex-1 border-2 border-gray-400 rounded-md p-2"
           href={`/map/${location?.course.id}`}
         >
-          マップに戻る
-        </Link>
-        <Link
-          className="flex-1 border-2 border-gray-400 rounded-md p-2"
-          href={`/course/${location?.course.id}`}
-        >
-          コース詳細に戻る
+          戻る
         </Link>
       </div>
       <div className="w-full p-2 bg-gray-100 rounded-xl shadow-md">

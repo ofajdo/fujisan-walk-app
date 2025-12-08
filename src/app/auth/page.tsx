@@ -1,4 +1,5 @@
 import { signIn } from "@/auth";
+import { Metadata } from "next";
 import { FaGoogle, FaLine } from "react-icons/fa";
 
 export default function Auth() {

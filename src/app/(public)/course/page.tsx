@@ -1,6 +1,7 @@
 import { CoursesGet } from "@/data/courses";
 import { CourseList } from "@/components/course/CourseList";
 import type { Prisma } from "@prisma/client";
+import { Metadata } from "next";
 
 type Course = Prisma.CourseGetPayload<{
   include: {
@@ -19,6 +20,15 @@ type Course = Prisma.CourseGetPayload<{
     };
   };
 }>;
+
+export const metadata: Metadata = {
+  title: "コース一覧｜富士宮市歩く博物館デジタル",
+  description:
+    "富士宮市歩く博物館のデジタル版です。富士宮市の歩く博物館の紹介をしています。歩くルートをデジタルのマップで見ることができます。パンフレットとガイドブックを参考にしています",
+  verification: {
+    google: "pN0H3UKaXSIYAoZW9gR1IEyLjFql2k2mErkNYOn9Rbc",
+  },
+};
 
 const Course = async () => {
   const courses: Course[] = await CoursesGet().catch(() => []);

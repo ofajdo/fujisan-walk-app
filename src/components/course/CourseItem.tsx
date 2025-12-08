@@ -40,7 +40,7 @@ export function CourseItem({ course }: { course: Course }) {
       </div>
       <div className="flex-grow px-1">
         <h2 className="text-2xl text-center font-medium cursor-pointer hover:underline text-balance">
-          <Link href={`/course/${course.id}`}>{course.title}</Link>
+          <Link href={`/map/${course.id}`}>{course.title}</Link>
         </h2>
         <div className="p-2">
           <p
