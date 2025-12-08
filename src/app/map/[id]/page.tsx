@@ -7,7 +7,7 @@ import { Metadata } from "next";
 const courses = await CoursesGet();
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export const generateStaticParams = () => {
