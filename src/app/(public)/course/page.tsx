@@ -22,7 +22,7 @@ type Course = Prisma.CourseGetPayload<{
 }>;
 
 export const metadata: Metadata = {
-  title: "コース一覧｜富士宮市歩く博物館デジタル",
+  title: "コース一覧 - 富士宮市歩く博物館デジタル",
   description:
     "富士宮市歩く博物館のデジタル版です。富士宮市の歩く博物館の紹介をしています。歩くルートをデジタルのマップで見ることができます。パンフレットとガイドブックを参考にしています",
   verification: {

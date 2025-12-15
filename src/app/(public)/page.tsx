@@ -29,7 +29,7 @@ const Home = async () => {
       <div className="flex flex-col gap-6">
         <div className="text-center p-4">
           <h2 className="text-2xl font-bold">
-            富士宮市歩く博物館デジタル版へようこそ
+            富士宮市歩く博物館デジタルへようこそ
           </h2>
         </div>
         <p className="text-center">
