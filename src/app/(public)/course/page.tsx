@@ -21,6 +21,8 @@ type Course = Prisma.CourseGetPayload<{
   };
 }>;
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "コース一覧 - 富士宮市歩く博物館デジタル",
   description:

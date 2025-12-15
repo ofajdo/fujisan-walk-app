@@ -21,6 +21,8 @@ type Course = Prisma.CourseGetPayload<{
   };
 }>;
 
+export const dynamic = "force-static";
+
 const Home = async () => {
   const courses: Course[] = await CoursesGet().catch(() => []);
 
