@@ -16,8 +16,8 @@ model Course {
   title       String
   description String
   districts   String
-  distance    Int
-  time        Int
+  distance    Float    // Int → Float
+  time        Float    // Int → Float
   points      CoursePoint[]
   locations   Location[]
   routes Route[]
