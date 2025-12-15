@@ -1,18 +1,13 @@
-<!-- AI -->
-
 <!DOCTYPE html>
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Leaflet マップ切替 + ピン保存 & 線接続</title>
+    <title>Leaflet：CSV追加・小型ピン・移動・線上追加</title>
 
-    <!-- Leaflet CSS -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-      crossorigin=""
     />
 
     <style>
@@ -22,7 +17,7 @@
         margin: 0;
         background: #0b1020;
         color: #e8edf5;
-        font-family: sans-serif;
+        font-family: system-ui;
       }
       .app {
         display: grid;
@@ -31,21 +26,20 @@
       }
       header {
         display: flex;
-        gap: 0.75rem;
+        gap: 0.5rem;
         align-items: center;
-        padding: 0.75rem 1rem;
+        padding: 0.6rem 1rem;
         background: linear-gradient(90deg, #121936, #0b1020);
         border-bottom: 1px solid #1f2947;
       }
       header h1 {
         margin: 0;
         font-size: 1rem;
-        font-weight: 600;
         color: #cfe1ff;
       }
       header .hint {
+        font-size: 0.85rem;
         opacity: 0.85;
-        font-size: 0.9rem;
       }
       header .spacer {
         flex: 1;
@@ -54,14 +48,13 @@
         border: 1px solid #28406f;
         background: #142044;
         color: #dbe8ff;
-        padding: 0.5rem 0.75rem;
+        padding: 0.45rem 0.7rem;
         border-radius: 999px;
         cursor: pointer;
         font-weight: 600;
       }
       button:hover {
         background: #172757;
-        border-color: #3560a9;
       }
       #map {
         width: 100%;
@@ -70,224 +63,255 @@
       .toast {
         position: fixed;
         left: 50%;
-        bottom: 20px;
+        bottom: 18px;
         transform: translateX(-50%) translateY(20px);
         background: rgba(13, 24, 55, 0.9);
-        color: #e6f0ff;
         border: 1px solid #2c477c;
-        border-radius: 12px;
-        padding: 0.6rem 0.9rem;
-        font-size: 0.95rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        border-radius: 10px;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.9rem;
         opacity: 0;
-        pointer-events: none;
-        transition: all 0.25s ease;
-        z-index: 2000;
+        transition: 0.25s;
       }
       .toast.show {
         opacity: 1;
-        transform: translateX(-50%) translateY(0);
+        transform: translateX(-50%);
       }
-      .leaflet-popup-content-wrapper,
-      .leaflet-popup-tip {
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 20000;
+      }
+      .modal .box {
         background: #0f1834;
-        color: #e6eeff;
         border: 1px solid #2a4170;
+        border-radius: 12px;
+        padding: 1rem;
+        width: min(420px, 90%);
+      }
+      textarea {
+        width: 100%;
+        height: 140px;
+        background: #0b1020;
+        color: #e8edf5;
+        border: 1px solid #28406f;
+        border-radius: 8px;
       }
       .small {
-        font-size: 0.85rem;
-        opacity: 0.9;
+        font-size: 0.8rem;
+        opacity: 0.85;
       }
     </style>
   </head>
+
   <body>
     <div class="app">
       <header>
-        <h1>Leaflet：ピン保存 & 線接続 + 地図切替</h1>
-        <div class="hint">クリックでピン保存・コピー。ピンは線で接続。</div>
+        <h1>Leaflet：ピン編集強化</h1>
+        <div class="hint">
+          クリックで追加 / 線クリックで間に追加 / ドラッグで移動
+        </div>
         <div class="spacer"></div>
-        <button id="btn-export">全座標CSVコピー</button>
+        <button id="btn-csv">CSV追加</button>
+        <button id="btn-export">CSVコピー</button>
         <button id="btn-clear">全削除</button>
       </header>
       <div id="map"></div>
     </div>
+
     <div id="toast" class="toast"></div>
 
-    <!-- Leaflet JS -->
-    <script
-      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-      crossorigin=""
-    ></script>
+    <!-- CSV入力モーダル -->
+    <div id="csvModal" class="modal">
+      <div class="box">
+        <h3>CSV入力（緯度,経度）</h3>
+        <textarea
+          id="csvText"
+          placeholder="35.681236,139.767125&#10;35.68,139.77"
+        ></textarea>
+        <div
+          style="
+            margin-top: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+          "
+        >
+          <button id="csvCancel">キャンセル</button>
+          <button id="csvAdd">追加</button>
+        </div>
+        <div class="small">※ 1行 = 1地点</div>
+      </div>
+    </div>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-      const STORAGE_KEY = "leaflet_saved_markers_v3";
+      const STORAGE_KEY = "leaflet_markers_v4";
       const fmt = (n) => Number(n).toFixed(6);
-
       const toastEl = document.getElementById("toast");
-      let toastTimer = null;
-      function showToast(msg, ms = 1800) {
-        toastEl.textContent = msg;
+      const showToast = (m) => {
+        toastEl.textContent = m;
         toastEl.classList.add("show");
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toastEl.classList.remove("show"), ms);
-      }
-      async function copyText(t) {
+        setTimeout(() => toastEl.classList.remove("show"), 1600);
+      };
+      const copyText = async (t) => {
         try {
           await navigator.clipboard.writeText(t);
           return true;
         } catch {
           return false;
         }
-      }
+      };
 
-      // ====== ベースレイヤー ======
+      // ---- 地図 & レイヤー
       const osm = L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          maxZoom: 19,
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>',
-        }
+        { maxZoom: 19 }
       );
-
       const gsi = L.tileLayer(
         "https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png",
-        {
-          attribution: "地理院地図",
-          maxZoom: 18,
-        }
+        { attribution: "地理院地図" }
       );
-
+      // --- Google Maps レイヤー（非公式タイル）
       const gmap = L.tileLayer(
-        "http://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
-        {
-          attribution: "Google Maps",
-          maxZoom: 19,
-        }
+        "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+        { attribution: "Google Maps", maxZoom: 22 }
       );
 
       const gsat = L.tileLayer(
-        "http://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
-        {
-          attribution: "Google Satellite",
-          maxZoom: 19,
-        }
+        "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+        { attribution: "Google Satellite", maxZoom: 22 }
       );
 
-      // Esri Satellite
-      const esriSat = L.tileLayer(
-        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        {
-          attribution:
-            "Tiles &copy; Esri &mdash; Source: Esri, Earthstar Geographics",
-          maxZoom: 18,
-        }
-      );
-
-      // 国土地理院写真画像
-      const gsiOrtho = L.tileLayer(
-        "https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg",
-        {
-          attribution: "地理院写真画像",
-          maxZoom: 18,
-        }
-      );
-
-      // ====== 地図初期化 ======
       const map = L.map("map", {
-        center: [35.221193, 138.614824],
+        center: [35.681236, 139.767125],
         zoom: 13,
         layers: [osm],
       });
-      L.control.scale({ imperial: false }).addTo(map);
+      L.control
+        .layers({
+          OpenStreetMap: osm,
+          "国土地理院(淡色)": gsi,
+          "Google Maps": gmap,
+          "Google 航空写真": gsat,
+        })
+        .addTo(map);
 
-      // レイヤー切替コントロール
-      const baseMaps = {
-        OpenStreetMap: osm,
-        "国土地理院(淡色)": gsi,
-        "Google Maps": gmap,
-        "Google 航空写真": gsat,
-        "Esri 衛星写真": esriSat,
-        国土地理院写真画像: gsiOrtho,
-      };
-      L.control.layers(baseMaps).addTo(map);
+      // ---- 小型ピン
+      const smallIcon = L.icon({
+        iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+        iconSize: [16, 26],
+        iconAnchor: [8, 26],
+        popupAnchor: [0, -22],
+        shadowUrl:
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+        shadowSize: [26, 26],
+        shadowAnchor: [8, 26],
+      });
 
-      // ====== マーカー管理 ======
       let markers = [];
-      let polyline = L.polyline([], { color: "#4dd0ff", weight: 3 }).addTo(map);
+      let polyline = L.polyline([], { color: "#4dd0ff", weight: 8 }).addTo(map);
 
       function updatePolyline() {
         polyline.setLatLngs(markers.map((m) => m.latlng));
       }
-      function saveMarkers() {
-        const data = markers.map((m) => ({
-          lat: m.latlng.lat,
-          lng: m.latlng.lng,
-        }));
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      function save() {
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify(markers.map((m) => m.latlng))
+        );
         updatePolyline();
       }
 
-      function addMarker(latlng, copyNow = true) {
-        const text = `${fmt(latlng.lat)},${fmt(latlng.lng)}`;
-        const marker = L.marker(latlng).addTo(map);
-        marker.bindPopup(
-          `<div><strong>座標</strong>：${text}<br><span class="small">クリックでコピー / 右クリックで削除</span></div>`
-        );
-        marker.on("click", async () => {
-          await copyText(text);
-          showToast(`コピーしました：${text}`);
+      function addMarkerAt(latlng, index = null) {
+        const marker = L.marker(latlng, {
+          icon: smallIcon,
+          draggable: true,
+        }).addTo(map);
+        marker.bindPopup(`${fmt(latlng.lat)},${fmt(latlng.lng)}`);
+        marker.on("dragend", () => {
+          const m = markers.find((x) => x.marker === marker);
+          m.latlng = marker.getLatLng();
+          save();
         });
         marker.on("contextmenu", () => {
           map.removeLayer(marker);
           markers = markers.filter((m) => m.marker !== marker);
-          saveMarkers();
-          showToast("ピン削除しました");
+          save();
         });
-        markers.push({ marker, latlng });
-        saveMarkers();
-        if (copyNow) {
-          copyText(text).then((ok) =>
-            showToast(ok ? `コピーしました：${text}` : "コピー失敗")
+        if (index === null) markers.push({ marker, latlng });
+        else markers.splice(index, 0, { marker, latlng });
+        save();
+      }
+
+      // 地図クリック：末尾に追加
+      map.on("click", (e) => addMarkerAt(e.latlng));
+
+      // 線クリック：一番近い区間に挿入
+      polyline.on("click", (e) => {
+        if (markers.length < 2) {
+          addMarkerAt(e.latlng);
+          return;
+        }
+        let min = Infinity,
+          idx = markers.length;
+        for (let i = 0; i < markers.length - 1; i++) {
+          const d = L.LineUtil.pointToSegmentDistance(
+            map.latLngToLayerPoint(e.latlng),
+            map.latLngToLayerPoint(markers[i].latlng),
+            map.latLngToLayerPoint(markers[i + 1].latlng)
           );
+          if (d < min) {
+            min = d;
+            idx = i + 1;
+          }
         }
-      }
+        addMarkerAt(e.latlng, idx);
+      });
 
-      function loadMarkers() {
-        markers.forEach((m) => map.removeLayer(m.marker));
-        markers = [];
+      // 復元
+      (function load() {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          try {
-            JSON.parse(raw).forEach((p) =>
-              addMarker(L.latLng(p.lat, p.lng), false)
-            );
-          } catch {}
-        }
-        updatePolyline();
-      }
+        if (!raw) return;
+        JSON.parse(raw).forEach((ll) => addMarkerAt(L.latLng(ll.lat, ll.lng)));
+      })();
 
-      map.on("click", (e) => addMarker(e.latlng, true));
-      loadMarkers();
-
-      // ====== ボタン処理 ======
-      document.getElementById("btn-clear").onclick = () => {
-        if (!confirm("全ピンを削除しますか？")) return;
-        localStorage.removeItem(STORAGE_KEY);
-        loadMarkers();
-        showToast("全削除しました");
+      // ---- CSV 入力
+      const modal = document.getElementById("csvModal");
+      document.getElementById("btn-csv").onclick = () =>
+        (modal.style.display = "flex");
+      document.getElementById("csvCancel").onclick = () =>
+        (modal.style.display = "none");
+      document.getElementById("csvAdd").onclick = () => {
+        const lines = document.getElementById("csvText").value.split(/\n+/);
+        lines.forEach((l) => {
+          const [lat, lng] = l.split(",").map(Number);
+          if (!isNaN(lat) && !isNaN(lng)) addMarkerAt(L.latLng(lat, lng));
+        });
+        modal.style.display = "none";
+        showToast("CSVから追加しました");
       };
+
+      // ---- CSV コピー / 全削除
       document.getElementById("btn-export").onclick = async () => {
         const csv = markers
           .map((m) => `${fmt(m.latlng.lat)},${fmt(m.latlng.lng)}`)
           .join("\n");
-        if (!csv) {
-          showToast("座標なし");
-          return;
-        }
-        const ok = await copyText(csv);
-        showToast(ok ? "CSVコピーしました" : "コピー失敗");
+        if (!csv) return showToast("データなし");
+        await copyText(csv);
+        showToast("CSVコピーしました");
+      };
+      document.getElementById("btn-clear").onclick = () => {
+        if (!confirm("全削除しますか？")) return;
+        markers.forEach((m) => map.removeLayer(m.marker));
+        markers = [];
+        save();
+        localStorage.removeItem(STORAGE_KEY);
+        showToast("全削除しました");
       };
     </script>
   </body>
