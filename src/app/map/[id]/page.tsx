@@ -4,6 +4,8 @@ import type { Prisma } from "@prisma/client";
 import CourseMap from "@/components/map/CourseMap";
 import { Metadata } from "next";
 
+export const revalidate = 60;
+
 const courses = await CoursesGet();
 
 type Props = {

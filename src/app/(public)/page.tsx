@@ -3,6 +3,8 @@ import { CourseList } from "@/components/course/CourseList";
 import type { Prisma } from "@prisma/client";
 import Link from "next/link";
 
+export const revalidate = 3600;
+
 type Course = Prisma.CourseGetPayload<{
   include: {
     startingPoint: true;
