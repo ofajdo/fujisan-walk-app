@@ -82,7 +82,7 @@ const CourseMap: React.FC<CourseMapProps> = ({ course }) => {
       {
         id: startingPoint.id,
         position: toLngLat(startingPoint.place) as [number, number],
-        text: `スタート／ゴール`,
+        text: `スタート＆ゴール`,
         color: "#2222ff",
         onClick: () => {},
       },
@@ -110,7 +110,28 @@ const CourseMap: React.FC<CourseMapProps> = ({ course }) => {
       <div
         className={`flex-1 h-full w-full max-h-96 overflow-y-scroll sm:max-w-md sm:max-h-full`}
       >
-        <div className="p-1">{course && <CourseItem course={course} />}</div>
+        <div className="p-1">
+          {course && <CourseItem course={course} />}
+          <a
+            href={course.startingPoint.google}
+            className="flex py-1 content-center justify-around items-center gap-1"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <h3 className="mb-1 p-1 text-center font-medium text-blue-900 text-xl">
+              <span className="text-nowrap">スタート</span>&
+              <span className="text-nowrap">ゴール</span>
+            </h3>
+            <div className="flex py-1 content-center justify-around flex-wrap items-center gap-1">
+              <h4 className="font-bold text-gray-700 text-sm">
+                {course.startingPoint.name}
+              </h4>
+              <div className="py-1 px-3 bg-gray-200 rounded-full text-sm">
+                {course.startingPoint.address}
+              </div>
+            </div>
+          </a>
+        </div>
         <LocationList
           course={course}
           onWalked={(location: any) => {

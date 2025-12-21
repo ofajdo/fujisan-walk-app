@@ -56,9 +56,7 @@ const Home = async () => {
             出典
           </h3>
           <p className="text-sm p-2 line-height">
-            このサイトは、「富士宮市歩く博物館」のパンフレット・ガイドブックをもとに作成しています。
-            <br />
-            以下の市のサイトをご参照ください。
+            このサイトは、富士宮市の「歩く博物館パンフレット」・「歩く博物館ガイドブック　訂正版」をもとに作成しています。
             <br />
             <a
               href="https://www.city.fujinomiya.lg.jp/3010400000/p001925.html"
@@ -66,7 +64,7 @@ const Home = async () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              富士宮市歩く博物館
+              歩く博物館｜静岡県富士宮市
             </a>
           </p>
         </div>

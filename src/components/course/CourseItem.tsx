@@ -29,7 +29,7 @@ export function CourseItem({ course }: { course: Course }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-full flex flex-col sm:flex-row">
+    <div className="w-full flex flex-col sm:flex-row sm:self-center items-center">
       <div className="grid place-items-center">
         <div className="flex justify-center sm:flex-col items-center gap-2 text-xs text-center">
           <span className="text-blue-500 text-3xl sm:text-4xl font-bold px-2">
@@ -38,7 +38,7 @@ export function CourseItem({ course }: { course: Course }) {
           {course.districts}地区
         </div>
       </div>
-      <div className="flex-grow px-1">
+      <div className="px-1">
         <h2 className="text-2xl text-center font-medium cursor-pointer hover:underline text-balance">
           <Link href={`/map/${course.id}`}>{course.title}</Link>
         </h2>
@@ -50,18 +50,21 @@ export function CourseItem({ course }: { course: Course }) {
             {course.description}
           </p>
         </div>
-        <div className="p-2 flex">
-          <div className="w-[50%] flex justify-center items-center">
-            <FaWalking className="h-[1.25rem] w-[1.25rem]" />
+        <div className="flex">
+          <div className="w-[50%] flex justify-center items-center flex-wrap gap-2">
+            <div className="flex justify-center items-center gap-1 text-nowrap font-medium">
+              <FaWalking className="h-[1.25rem] w-[1.25rem]" />
+              距離
+            </div>
             {`約${course.distance}km`}
           </div>
-          <div className="w-[50%] flex justify-center items-center">
-            <IoMdTime className="h-[1.25rem] w-[1.25rem]" />
+          <div className="w-[50%] flex justify-center items-center flex-wrap gap-2">
+            <div className="flex justify-center items-center gap-1 text-nowrap font-medium">
+              <IoMdTime className="h-[1.25rem] w-[1.25rem]" />
+              所要時間
+            </div>
             {`約${course.time}時間`}
           </div>
-        </div>
-        <div>
-          <ul></ul>
         </div>
       </div>
       {/* モーダル */}
@@ -80,7 +83,7 @@ export function CourseItem({ course }: { course: Course }) {
             <p className="text-sm text-gray-800">{course.description}</p>
             <div className="flex py-3 content-center justify-around flex-wrap items-center gap-1">
               <h4 className="m-2 font-bold text-gray-700 text-sm">ポイント</h4>
-              <ul className="flex justify-around flex-wrap">
+              <ul className="flex justify-around flex-wrap gap-2">
                 {course.points?.length ? (
                   course.points.map(({ point }, index) => (
                     <li
@@ -91,7 +94,7 @@ export function CourseItem({ course }: { course: Course }) {
                     </li>
                   ))
                 ) : (
-                  <li>ポイントがありません</li>
+                  <li>ポイントが設定されていません。</li>
                 )}
               </ul>
             </div>
