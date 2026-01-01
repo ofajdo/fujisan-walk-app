@@ -3,7 +3,7 @@ import { CourseList } from "@/components/course/CourseList";
 import type { Prisma } from "@prisma/client";
 import { Metadata } from "next";
 
-export const revalidate = 3600;
+export const revalidate = 600;
 
 type Course = Prisma.CourseGetPayload<{
   include: {

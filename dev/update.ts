@@ -4,9 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   const result = await prisma.route.updateMany({
-    data: {
-      display: true,
-    },
+    data: {},
   });
 
   console.log(`Updated ${result.count} records.`);

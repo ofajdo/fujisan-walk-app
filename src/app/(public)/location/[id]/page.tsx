@@ -3,7 +3,7 @@ import { LocationSerchById, LocationsGet } from "@/data/locations";
 import { Metadata } from "next";
 import Link from "next/link";
 
-export const revalidate = 86400;
+export const revalidate = 600;
 
 const locations = await LocationsGet();
 export const generateStaticParams = () => {
