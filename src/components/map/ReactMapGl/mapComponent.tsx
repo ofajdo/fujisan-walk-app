@@ -74,13 +74,13 @@ export function MapComponent({
     map.addControl(
       new NavigationControl({
         visualizePitch: true,
-        showZoom: true,
+        showZoom: false,
         showCompass: true,
       }),
-      "top-left"
+      "bottom-right"
     );
 
-    map.addControl(new FullscreenControl(), "top-left");
+    map.addControl(new FullscreenControl(), "bottom-right");
 
     const geolocate = new GeolocateControl({
       positionOptions: { enableHighAccuracy: true },
@@ -89,10 +89,10 @@ export function MapComponent({
       showAccuracyCircle: true,
       fitBoundsOptions: { maxZoom: 17 },
     });
-    map.addControl(geolocate, "top-left");
+    map.addControl(geolocate, "bottom-right");
 
     const compass = new CompassControl();
-    map.addControl(compass, "top-left");
+    map.addControl(compass, "bottom-right");
 
     let isOperating = false;
     map.on("touchstart", () => (isOperating = true));
@@ -169,7 +169,7 @@ export function CourseRouteMap({
     zoom: 16,
     bearing: 0,
     pitch: 0,
-    padding: { top: 0, bottom: 0, left: 0, right: 0 },
+    padding: { bottom: 0, top: 0, left: 0, right: 0 },
   });
 
   React.useEffect(() => {
@@ -207,11 +207,11 @@ export function CourseRouteMap({
         longitude={Number(course.startingPoint.place?.longitude)}
         latitude={Number(course.startingPoint.place?.latitude)}
       >
-        <div className="text-center">
+        <div className="flex flex-col items-center">
           <h3 className="text-sm font-medium p-2 text-white bg-blue-700 rounded-3xl">
             スタート&ゴール
           </h3>
-          <p className="text-xs">{course.startingPoint.name}</p>
+          <p className="text-[10px]">{course.startingPoint.name}</p>
         </div>
       </Marker>
 
