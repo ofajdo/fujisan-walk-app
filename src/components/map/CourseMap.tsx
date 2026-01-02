@@ -13,6 +13,7 @@ import { locationsDB } from "@/lib/localdb";
 //import { CourseRouteRoad } from "./leaflet/CourseRouteRoad";
 import { GetUser } from "@/actions/user";
 import { DeleteUserLocation } from "@/data/users";
+import { CourseRouteMap } from "./ReactMapGl/mapComponent";
 
 type Course = Prisma.CourseGetPayload<{
   include: {
@@ -51,51 +52,51 @@ const CourseMap: React.FC<CourseMapProps> = ({ course }) => {
   const courseRoute: number[][] = course.routes.map((route) => toLngLat(route));
   const startingPoint = course?.startingPoint;
   const [center, setCenter] = useState<number[] | null>(null);
-  const courseData = course.locations.map((location) => {
-    return {
-      id: location.id,
-      position: toLngLat(location.place) as [number, number],
-      text: `${location.number}`,
-      color: items?.some((v) => v.id === location.id) ? "#aaa" : "#333",
-      onClick: async () => {
-        const user = await GetUser().catch((err) => null);
-        if (items?.some((loc) => loc.id === location.id)) {
-          locationsDB.items.delete(location.id);
-          if (user?.id)
-            await DeleteUserLocation({
-              id: location.id,
-              user: user.id,
-            }).catch(() => null);
-        } else {
-          await locationsDB.items.add({ id: location.id });
-        }
-        setCenter(toLngLat(location.place));
-      },
-    };
-  });
-  const Contents = (map: any) => {
-    if (!map) return;
-    const cleanup = CourseLines({ map: map, route: courseRoute });
-    const locationsMarkerController = addCircleMarkers(map, [
-      ...courseData,
+  // const courseData = course.locations.map((location) => {
+  //   return {
+  //     id: location.id,
+  //     position: toLngLat(location.place) as [number, number],
+  //     text: `${location.number}`,
+  //     color: items?.some((v) => v.id === location.id) ? "#aaa" : "#333",
+  //     onClick: async () => {
+  //       const user = await GetUser().catch((err) => null);
+  //       if (items?.some((loc) => loc.id === location.id)) {
+  //         locationsDB.items.delete(location.id);
+  //         if (user?.id)
+  //           await DeleteUserLocation({
+  //             id: location.id,
+  //             user: user.id,
+  //           }).catch(() => null);
+  //       } else {
+  //         await locationsDB.items.add({ id: location.id });
+  //       }
+  //       setCenter(toLngLat(location.place));
+  //     },
+  //   };
+  // });
+  // const Contents = (map: any) => {
+  //   if (!map) return;
+  //   const cleanup = CourseLines({ map: map, route: courseRoute });
+  //   const locationsMarkerController = addCircleMarkers(map, [
+  //     ...courseData,
 
-      {
-        id: startingPoint.id,
-        position: toLngLat(startingPoint.place) as [number, number],
-        text: `スタート＆ゴール`,
-        color: "#2222ff",
-        onClick: () => {},
-      },
-    ]);
+  //     {
+  //       id: startingPoint.id,
+  //       position: toLngLat(startingPoint.place) as [number, number],
+  //       text: `スタート＆ゴール`,
+  //       color: "#2222ff",
+  //       onClick: () => {},
+  //     },
+  //   ]);
 
-    // クリーンアップ関数を返す
-    return cleanup;
-  };
+  //   // クリーンアップ関数を返す
+  //   return cleanup;
+  // };
 
   return (
     <>
       <div className="w-full h-full flex-1">
-        {/* {course && <CourseRouteRoad course={course} />} */}
+        {/* {course && <CourseRouteRoad course={course} />}
         <MapClient
           center={
             center
@@ -104,7 +105,11 @@ const CourseMap: React.FC<CourseMapProps> = ({ course }) => {
           }
           contents={Contents}
           course={course}
-        ></MapClient>
+        ></MapClient> */}
+        <CourseRouteMap
+          center={center ? center : toLngLat(startingPoint.place)}
+          course={course}
+        />
       </div>
 
       <div

@@ -5,7 +5,7 @@ import { signIn, signOut } from "@/auth";
 import logoImg from "../../assets/logo.svg";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
-import { FaRoute } from "react-icons/fa";
+import { FaRoute, FaHome } from "react-icons/fa";
 import { CoursesGet } from "@/data/courses";
 import { GetUser } from "@/actions/user";
 
@@ -63,7 +63,7 @@ export async function CourseMenu() {
       {courses.map((course) => (
         <div key={course.id} className="text-sm font-normal">
           <Link
-            href={`/map/${course.id}`}
+            href={`/course/${course.id}`}
             className="hover:underline line-clamp-1"
           >
             <span className="p-1 font-medium font-mono text-base">
@@ -79,10 +79,11 @@ export async function CourseMenu() {
 
 export async function AccountMenu() {
   const user = await GetUser();
+  console.log(user);
 
   return (
     <NavItem
-      href="/auth"
+      href="/account"
       icon={<MdOutlineAccountCircle className="h-[1.25em] w-[1.25em]" />}
       label="アカウント"
     >
@@ -143,6 +144,11 @@ export function Header() {
       <div className="backdrop-blur-md bg-opacity-50 bg-gray-300 flex justify-around items-center shadow-md flex-wrap p-2 rounded-full bg-[url(/header_back.svg)] bg-[center_bottom] bg-contain bg-no-repeat">
         <Logo />
         <div className="flex justify-around flex-wrap flex-grow font-medium items-center">
+          <NavItem
+            href="/"
+            icon={<FaHome className="h-[1.25em] w-[1.25em]" />}
+            label="トップ"
+          />
           <CourseMenu />
           <AccountMenu />
         </div>
