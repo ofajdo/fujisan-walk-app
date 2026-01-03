@@ -1,8 +1,11 @@
 import { CourseGetById, CoursesGet } from "@/data/courses";
 import React from "react";
 import type { Prisma } from "@prisma/client";
-import CourseMap from "@/components/map/CourseMap";
+import { toLngLat } from "@/components/map/Map";
 import { Metadata } from "next";
+import { CourseItem } from "@/components/course/CourseItem";
+import LocationList from "@/components/map/locationList";
+import { CourseMap } from "@/components/map/CourseMap";
 
 export const revalidate = 60;
 
@@ -54,9 +57,6 @@ export default async function Course({ params }: Props) {
   const { id } = await params;
   const course = courses.find((c) => c.id === id);
 
-  return (
-    <>
-      <CourseMap course={course!} />
-    </>
-  );
+  if (!course) return;
+  return <CourseMap course={course}></CourseMap>;
 }

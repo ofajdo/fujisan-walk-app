@@ -34,12 +34,38 @@ export async function LocationSerchById({ id }: Location) {
 export async function LocationsGet() {
   const location = await prisma.location.findMany({
     include: {
+      place: true,
       course: {
         include: {
-          routes: true,
-          locations: {
+          startingPoint: {
             include: {
               place: true,
+            },
+          },
+          routes: {
+            orderBy: {
+              sort: "asc",
+            },
+            where: { display: true },
+          },
+          points: {
+            include: {
+              point: true,
+            },
+          },
+          locations: {
+            orderBy: {
+              number: "asc",
+            },
+            include: {
+              course: true,
+              place: true,
+              topic: {
+                include: { topic: true },
+              },
+              culture: {
+                include: { culture: true },
+              },
             },
           },
         },

@@ -1,9 +1,14 @@
 import { Detail } from "@/components/location/Detail";
+import CourseMap from "@/components/map/Map";
+import { CoursesGet } from "@/data/courses";
 import { LocationSerchById, LocationsGet } from "@/data/locations";
 import { Metadata } from "next";
 import Link from "next/link";
+import { useMemo } from "react";
 
-export const revalidate = 600;
+export const revalidate = 6000;
+
+const courses = await CoursesGet();
 
 const locations = await LocationsGet();
 export const generateStaticParams = () => {
@@ -26,6 +31,13 @@ export async function generateMetadata({
   };
 }
 
+export const toLngLat = (
+  place: { latitude: string; longitude: string } | null
+) => [
+  Number(place?.longitude || "35.222"),
+  Number(place?.latitude || "138.621"),
+];
+
 export default async function Location({
   params,
 }: {
@@ -34,21 +46,25 @@ export default async function Location({
   const { id } = await params;
   const location = locations.find((l) => l.id === id);
 
+  const course = courses.find((c) => c.id === location?.course.id);
+
   if (!location) return <div className="p-4">見つかりませんでした。</div>;
 
+  if (!course) return;
+
   return (
-    <div>
-      <div className="flex gap-2 text-center p-2">
-        <Link
-          className="flex-1 border-2 border-gray-400 rounded-md p-2"
-          href={`/map/${location?.course.id}`}
-        >
-          戻る
-        </Link>
-      </div>
-      <div className="w-full p-2 bg-gray-100 rounded-xl shadow-md">
+    <>
+      <CourseMap course={course} center={toLngLat(location.place)}>
+        <div className="flex gap-2 text-center p-2">
+          <Link
+            className="flex-1 border-2 border-gray-400 rounded-md p-2"
+            href={`/map/${location?.course.id}`}
+          >
+            戻る
+          </Link>
+        </div>
         {location && <Detail location={location} />}
-      </div>
-    </div>
+      </CourseMap>
+    </>
   );
 }

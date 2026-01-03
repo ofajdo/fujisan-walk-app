@@ -3,7 +3,11 @@ import Link from "next/link";
 
 import logoImg from "../../assets/logo.svg";
 import { FaHome } from "react-icons/fa";
-import { NavItem, CourseMenu, AccountMenu } from "./Nav";
+import { NavItem, CourseMenu } from "./Nav";
+import { AccountMenu } from "./Account";
+import { CoursesGet } from "@/data/courses";
+
+const courses = await CoursesGet();
 
 export function Logo() {
   return (
@@ -28,7 +32,7 @@ export function Header() {
             icon={<FaHome className="h-[1.25em] w-[1.25em]" />}
             label="トップ"
           />
-          <CourseMenu />
+          <CourseMenu courses={courses} />
           <AccountMenu />
         </div>
       </div>

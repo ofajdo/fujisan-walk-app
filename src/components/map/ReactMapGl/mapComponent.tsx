@@ -14,9 +14,10 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { CompassControl } from "maplibre-gl-compass";
 import "maplibre-gl-compass/style.css";
 import { Prisma } from "@prisma/client";
-import { toLngLat } from "../CourseMap";
+import { toLngLat } from "../Map";
 import { useLiveQuery } from "dexie-react-hooks";
 import { locationsDB } from "@/lib/localdb";
+import { usePathname } from "next/navigation";
 
 const mapStyle = process.env.NEXT_PUBLIC_MAP_STYLE!;
 
@@ -57,6 +58,18 @@ export function MapComponent({
     if (!map) return;
 
     const animate = (timestamp: number) => {
+      // スタイルがロード済みか
+      if (!map.isStyleLoaded?.()) {
+        requestAnimationFrame(animate);
+        return;
+      }
+
+      // route-dashed レイヤーが存在するか
+      const layer = map.getLayer("route-dashed");
+      if (!layer) {
+        requestAnimationFrame(animate);
+        return;
+      }
       const newStep = Math.floor((timestamp / 50) % dashArraySequence.length);
       if (newStep !== stepRef.current) {
         stepRef.current = newStep;
@@ -147,13 +160,13 @@ type Course = Prisma.CourseGetPayload<{
   };
 }>;
 
-export function CourseRouteMap({
+const CourseRouteMapComponent = ({
   center,
   course,
 }: {
   center: number[];
   course: Course;
-}) {
+}) => {
   const routeGeoJson: Feature<LineString> = {
     type: "Feature",
     properties: {},
@@ -179,6 +192,8 @@ export function CourseRouteMap({
       latitude: center[1],
     });
   }, [center]);
+
+  console.log(course.locations);
 
   return (
     <MapComponent viewState={viewState} onViewStateChange={setViewState}>
@@ -239,4 +254,6 @@ export function CourseRouteMap({
       </Source>
     </MapComponent>
   );
-}
+};
+
+export const CourseRouteMap = React.memo(CourseRouteMapComponent);

@@ -4,8 +4,6 @@ import { Overview } from "./Overview";
 
 import { Prisma } from "@prisma/client";
 
-import { LocationsRoad } from "../map/leaflet/LocationsMapLoad";
-
 type Location = Prisma.LocationGetPayload<{
   include: {
     course: {
@@ -48,12 +46,6 @@ export function Detail({ location }: { location: Location }) {
       </Overview>
       <div>
         <p className="p-2 text-gray-700 text-sm">{location?.description}</p>
-      </div>
-      <div className="h-64 w-full">
-        <LocationsRoad
-          course={location.course}
-          location_index={location.number}
-        />
       </div>
     </div>
   );

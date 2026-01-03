@@ -6,7 +6,7 @@ import { locationsDB } from "@/lib/localdb";
 import { useLiveQuery } from "dexie-react-hooks";
 import { DeleteUserLocation } from "@/data/users";
 import { GetUser } from "@/actions/user";
-import { toLngLat } from "./CourseMap";
+import { toLngLat } from "./Map";
 
 type location = Prisma.LocationGetPayload<{
   include: {
