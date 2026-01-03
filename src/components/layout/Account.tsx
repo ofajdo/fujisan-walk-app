@@ -1,11 +1,12 @@
 import { signIn, signOut } from "@/auth";
-import { unstable_noStore as noStore } from "next/cache";
+import { connection } from "next/server";
 
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { GetUser } from "@/actions/user";
 import { NavItem } from "./Nav";
 export async function AccountMenu() {
-  noStore();
+  connection();
+
   const user = await GetUser();
   console.log(user);
 
