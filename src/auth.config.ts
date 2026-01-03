@@ -1,6 +1,7 @@
 // auth.config.ts (Prismaを含まない設定)
 import Google from "next-auth/providers/google";
 import Line from "next-auth/providers/line";
+import { cookies } from "next/headers";
 
 export const authConfig = {
   providers: [
@@ -13,5 +14,6 @@ export const authConfig = {
       clientSecret: process.env.LINE_CLIENT_SECRET!,
     }),
   ],
+  cookies: {},
   secret: process.env.AUTH_SECRET,
 };

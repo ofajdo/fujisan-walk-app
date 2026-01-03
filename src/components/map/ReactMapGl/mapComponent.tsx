@@ -193,8 +193,6 @@ const CourseRouteMapComponent = ({
     });
   }, [center]);
 
-  console.log(course.locations);
-
   return (
     <MapComponent viewState={viewState} onViewStateChange={setViewState}>
       {course.locations.map(({ id, place, number, title, description }) => {
