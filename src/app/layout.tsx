@@ -3,6 +3,8 @@ import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import { SyncUserLocation } from "@/components/Sync";
 import { Analytics } from "@vercel/analytics/next";
+import { AuthSessionProvider } from "@/components/SessionProvider";
+import { auth } from "@/auth";
 
 const notoSansJP = Noto_Sans_JP({
   subsets: ["latin"],
@@ -17,15 +19,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <html lang="ja">
       <body suppressHydrationWarning className={notoSansJP.className}>
-        <SyncUserLocation>{children}</SyncUserLocation>
+        <SyncUserLocation>
+          <AuthSessionProvider session={session}>
+            {children}
+          </AuthSessionProvider>
+        </SyncUserLocation>
         <Analytics />
       </body>
     </html>

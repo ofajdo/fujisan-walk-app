@@ -61,7 +61,7 @@ export default async function Location({
             戻る
           </Link>
         </div>
-        {location && <Detail location={location} />}
+        <div className="p-1">{location && <Detail location={location} />}</div>
       </CourseMap>
     </>
   );

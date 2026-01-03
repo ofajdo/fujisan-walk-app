@@ -1,14 +1,16 @@
-import { signIn, signOut } from "@/auth";
-import { connection } from "next/server";
+// components/AccountMenu.client.tsx
+"use client";
 
-import { MdOutlineAccountCircle } from "react-icons/md";
-import { GetUser } from "@/actions/user";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { NavItem } from "./Nav";
-export async function AccountMenu() {
-  connection();
+import { MdOutlineAccountCircle } from "react-icons/md";
+import { Session } from "next-auth";
+import { useRouter } from "next/navigation";
 
-  const user = await GetUser();
-  console.log(user);
+export function AccountMenuClient({ session }: { session: Session | null }) {
+  const router = useRouter();
+  const { data: asession, status } = useSession();
+  console.log(asession?.user, session?.user);
 
   return (
     <NavItem
@@ -16,12 +18,12 @@ export async function AccountMenu() {
       icon={<MdOutlineAccountCircle className="h-[1.25em] w-[1.25em]" />}
       label="アカウント"
     >
-      {!user?.id ? (
+      {!asession?.user ? (
         <>
           <form
             action={async () => {
-              "use server";
               await signIn("google");
+              router.refresh();
             }}
           >
             <button
@@ -33,8 +35,8 @@ export async function AccountMenu() {
           </form>
           <form
             action={async () => {
-              "use server";
               await signIn("line");
+              router.refresh();
             }}
           >
             <button
@@ -47,11 +49,11 @@ export async function AccountMenu() {
         </>
       ) : (
         <>
-          <p>{user.name}</p>
+          <p>{asession?.user.name}</p>
           <form
             action={async () => {
-              "use server";
               await signOut();
+              router.refresh();
             }}
           >
             <button
