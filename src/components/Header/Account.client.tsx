@@ -23,7 +23,6 @@ export function AccountMenuClient({ session }: { session: Session | null }) {
           <form
             action={async () => {
               await signIn("google");
-              router.refresh();
             }}
           >
             <button
@@ -36,7 +35,6 @@ export function AccountMenuClient({ session }: { session: Session | null }) {
           <form
             action={async () => {
               await signIn("line");
-              router.refresh();
             }}
           >
             <button
@@ -53,7 +51,6 @@ export function AccountMenuClient({ session }: { session: Session | null }) {
           <form
             action={async () => {
               await signOut();
-              router.refresh();
             }}
           >
             <button
