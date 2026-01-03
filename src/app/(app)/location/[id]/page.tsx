@@ -31,9 +31,7 @@ export async function generateMetadata({
   };
 }
 
-export const toLngLat = (
-  place: { latitude: string; longitude: string } | null
-) => [
+const toLngLat = (place: { latitude: string; longitude: string } | null) => [
   Number(place?.longitude || "35.222"),
   Number(place?.latitude || "138.621"),
 ];
