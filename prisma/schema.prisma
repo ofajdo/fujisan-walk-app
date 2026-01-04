@@ -21,6 +21,7 @@ model Course {
   points      CoursePoint[]
   locations   Location[]
   routes Route[]
+  userAchivers UserCourse[]
 
   startingPointId String
   startingPoint StartingPoint @relation(fields: [startingPointId],references: [id])
@@ -99,6 +100,19 @@ model UserLocation {
   @@id([userId, locationId])
 }
 
+model UserCourse {
+  userId String
+  courseId String
+  achievedAt DateTime @default(now())
+
+  user  User @relation(fields: [userId],references: [id])
+  course Course @relation(fields: [courseId],references: [id])
+
+
+  @@id([userId, courseId])
+}
+
+
 model Topic {
   id          String           @id @default(cuid())
   name        String
@@ -157,6 +171,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   locations UserLocation[]
+  coursses UserCourse[]
 }
  
 model Account {

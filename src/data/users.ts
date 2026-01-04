@@ -7,16 +7,17 @@ export const UsersGet = async () => {
 };
 
 export const PostUserLocations = async ({
-  id,
+  items,
   user,
 }: {
-  id: string[];
+  items: { id: string; achievedAt?: Date }[];
   user: string;
 }) => {
-  const userLocationData = id.map((i) => {
+  const userLocationData = items.map((i) => {
     return {
       userId: user,
-      locationId: i,
+      locationId: i.id,
+      achievedAt: i.achievedAt,
     };
   });
 
@@ -34,9 +35,10 @@ export const GetUserLocations = async ({ user }: { user: string }) => {
       userId: user,
     },
   });
-  return getUserLocation.map(({ locationId }) => {
+  return getUserLocation.map(({ locationId, achievedAt }) => {
     return {
       id: locationId,
+      createdAt: achievedAt,
     };
   });
 };
@@ -52,6 +54,59 @@ export const DeleteUserLocation = async ({
     where: {
       userId: user,
       locationId: id,
+    },
+  });
+};
+
+export const PostUserCourses = async ({
+  items,
+  user,
+}: {
+  items: { id: string; achievedAt?: Date }[];
+  user: string;
+}) => {
+  console.log(items);
+  const userCourseData = items.map((i) => {
+    return {
+      userId: user,
+      courseId: i.id,
+      achievedAt: i.achievedAt,
+    };
+  });
+
+  if (!userCourseData) return;
+
+  const createUserCourse = await prisma.userCourse.createMany({
+    data: userCourseData,
+    skipDuplicates: true,
+  });
+};
+
+export const GetUserCourses = async ({ user }: { user: string }) => {
+  const getUserCourse = await prisma.userCourse.findMany({
+    where: {
+      userId: user,
+    },
+  });
+  return getUserCourse.map(({ courseId, achievedAt }) => {
+    return {
+      id: courseId,
+      createdAt: achievedAt,
+    };
+  });
+};
+
+export const DeleteUserCourses = async ({
+  id,
+  user,
+}: {
+  id: string;
+  user: string;
+}) => {
+  const deleteUserLocation = await prisma.userCourse.deleteMany({
+    where: {
+      userId: user,
+      courseId: id,
     },
   });
 };

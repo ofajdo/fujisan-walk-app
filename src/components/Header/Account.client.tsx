@@ -10,7 +10,6 @@ import { useRouter } from "next/navigation";
 export function AccountMenuClient({ session }: { session: Session | null }) {
   const router = useRouter();
   const { data: asession, status } = useSession();
-  console.log(asession?.user, session?.user);
 
   return (
     <NavItem

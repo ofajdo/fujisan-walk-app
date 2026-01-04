@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
-import { SyncUserLocation } from "@/components/Sync";
+import { SyncUserCourse, SyncUserLocation } from "@/components/Sync";
 import { Analytics } from "@vercel/analytics/next";
 import { AuthSessionProvider } from "@/components/SessionProvider";
 import { auth } from "@/auth";
@@ -29,9 +29,11 @@ export default async function RootLayout({
     <html lang="ja">
       <body suppressHydrationWarning className={notoSansJP.className}>
         <SyncUserLocation>
-          <AuthSessionProvider session={session}>
-            {children}
-          </AuthSessionProvider>
+          <SyncUserCourse>
+            <AuthSessionProvider session={session}>
+              {children}
+            </AuthSessionProvider>
+          </SyncUserCourse>
         </SyncUserLocation>
         <Analytics />
       </body>

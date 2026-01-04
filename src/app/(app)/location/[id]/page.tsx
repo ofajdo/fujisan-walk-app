@@ -48,7 +48,7 @@ export default async function Location({
 
   if (!location) return <div className="p-4">見つかりませんでした。</div>;
 
-  if (!course) return;
+  if (!course) return null;
 
   return (
     <>

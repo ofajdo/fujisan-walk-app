@@ -57,6 +57,6 @@ export default async function Course({ params }: Props) {
   const { id } = await params;
   const course = courses.find((c) => c.id === id);
 
-  if (!course) return;
+  if (!course) return null;
   return <CourseMap course={course}></CourseMap>;
 }

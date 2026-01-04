@@ -35,7 +35,7 @@ const WalkedButton: React.FC<WalkedButtonProps> = ({ location, onWalked }) => {
           user: user.id,
         }).catch(() => null);
     } else {
-      await locationsDB.items.add({ id: location.id });
+      await locationsDB.items.add({ id: location.id, createdAt: new Date() });
     }
 
     setTimeout(() => setPending(false), 500); // 0.5秒後に元に戻す（必要に応じて調整）

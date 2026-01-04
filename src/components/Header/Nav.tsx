@@ -60,7 +60,7 @@ export function NavItem({
 }
 
 export function CourseMenu({ courses }: { courses: Course[] }) {
-  if (!courses) return;
+  if (!courses) return null;
   return (
     <NavItem
       href="/course"

@@ -52,7 +52,7 @@ export function MapComponent({
   const stepRef = React.useRef(0);
 
   const handleLoad = React.useCallback(() => {
-    if (!mapRef.current) return;
+    if (!mapRef.current) return null;
     const map = mapRef.current.getMap();
 
     if (!map) return;

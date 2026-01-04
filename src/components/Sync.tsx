@@ -1,10 +1,15 @@
 "use client";
 
-import { locationsDB } from "@/lib/localdb";
+import { coursesDB, locationsDB } from "@/lib/localdb";
 
 import { useLiveQuery } from "dexie-react-hooks";
 
-import { PostUserLocations, GetUserLocations } from "@/data/users";
+import {
+  PostUserLocations,
+  GetUserLocations,
+  PostUserCourses,
+  GetUserCourses,
+} from "@/data/users";
 
 import { Prisma } from "@prisma/client";
 
@@ -46,17 +51,55 @@ export const SyncUserLocation = ({
           return !items.map((item) => item.id).includes(id);
         });
 
-        await locationsDB.items.bulkAdd(filteredData);
+        await locationsDB.items.bulkAdd(
+          filteredData.map((item) => ({
+            ...item,
+          }))
+        );
 
         await PostUserLocations({
-          id: items.map((item) => {
-            return item.id;
+          items: items.map((item) => {
+            return { id: item.id, achievedAt: item.createdAt };
           }),
           user: user.id,
         }).catch(() => null);
       }
     };
     fetchLocations();
+  }, [items]);
+
+  return <>{children}</>;
+};
+
+export const SyncUserCourse = ({ children }: { children: React.ReactNode }) => {
+  const items = useLiveQuery(() => coursesDB.items.toArray());
+
+  React.useEffect(() => {
+    if (!items) return;
+    const fetchCourses = async () => {
+      const user = await GetUser().catch((error) => null);
+
+      if (user?.id) {
+        const dbData = await GetUserCourses({ user: user.id });
+        const filteredData = dbData.filter(({ id }) => {
+          return !items.map((item) => item.id).includes(id);
+        });
+
+        await coursesDB.items.bulkAdd(
+          filteredData.map((item) => ({
+            ...item,
+          }))
+        );
+
+        await PostUserCourses({
+          items: items.map((item) => {
+            return { id: item.id, achievedAt: item.createdAt };
+          }),
+          user: user.id,
+        }).catch(() => null);
+      }
+    };
+    fetchCourses();
   }, [items]);
 
   return <>{children}</>;

@@ -31,26 +31,12 @@ const Home = async () => {
   return (
     <div>
       <div className="flex flex-col gap-6">
-        <div className="text-center p-4">
-          <h2 className="text-2xl font-bold">
-            富士宮市歩く博物館デジタルへようこそ
-          </h2>
-        </div>
+        <h2 className="text-2xl font-bold text-center">
+          富士宮市歩く博物館デジタルへようこそ
+        </h2>
         <p className="text-center">
           富士宮市歩く博物館のコースの紹介をしています。
         </p>
-        <div>
-          <h3 className="mb-1 p-1 text-center font-medium text-blue-900 text-xl">
-            コース一覧 （全24コース中 {courses.length}コース）
-          </h3>
-          <Link
-            href="/course"
-            className="p-3 w-full block text-center bg-gray-100 text-base font-medium my-2"
-          >
-            コース一覧
-          </Link>
-          <CourseList courses={courses}></CourseList>
-        </div>
         <div>
           <h3 className="mb-1 p-1 text-center font-medium text-blue-900 text-xl">
             出典
@@ -67,6 +53,18 @@ const Home = async () => {
               歩く博物館｜静岡県富士宮市
             </a>
           </p>
+        </div>
+        <div>
+          <h3 className="mb-1 p-1 text-center font-medium text-blue-900 text-xl">
+            コース一覧 （全24コース中 {courses.length}コース）
+          </h3>
+          <Link
+            href="/course"
+            className="p-3 w-full block text-center bg-gray-100 text-base font-medium my-2"
+          >
+            コース一覧
+          </Link>
+          <CourseList courses={courses}></CourseList>
         </div>
       </div>
     </div>

@@ -10,7 +10,7 @@ export function AuthSessionProvider({
   session: any;
 }) {
   return (
-    <SessionProvider session={session} refetchInterval={5}>
+    <SessionProvider session={session} refetchInterval={60}>
       {children}
     </SessionProvider>
   );

@@ -2,12 +2,14 @@
 
 import { Prisma } from "@prisma/client";
 import { Overview } from "@/components/location/Overview";
-import React from "react";
+import React, { useState } from "react";
 import WalkedButton from "@/components/map/Walked";
 
-import { locationsDB } from "@/lib/localdb";
+import { coursesDB, locationsDB } from "@/lib/localdb";
 
 import { useLiveQuery } from "dexie-react-hooks";
+import { GetUser } from "@/actions/user";
+import { DeleteUserCourses } from "@/data/users";
 
 type Location = Prisma.LocationGetPayload<{
   include: {
@@ -41,6 +43,37 @@ const LocationList = ({
   onWalked: (lcoation: any) => void;
 }) => {
   const items = useLiveQuery(() => locationsDB.items.toArray()) || [];
+  const courses = useLiveQuery(() => coursesDB.items.toArray()) || [];
+
+  const [pending, setPending] = useState(false);
+
+  if (!!!course) return null;
+  const handleClick = async () => {
+    setPending(true);
+    const user = await GetUser().catch((err) => null);
+    if (courses?.some((cou) => cou.id === course.id)) {
+      await coursesDB.items.delete(course?.id);
+      if (user?.id)
+        await DeleteUserCourses({
+          id: course?.id,
+          user: user.id,
+        }).catch(() => null);
+    } else {
+      await coursesDB.items.add({ id: course.id, createdAt: new Date() });
+    }
+
+    setTimeout(() => setPending(false), 500); // 0.5秒後に元に戻す（必要に応じて調整）
+  };
+
+  let buttonClass =
+    "text-xl py-2 px-6 text-sm font-medium text-white rounded-full";
+  if (pending) {
+    buttonClass += " bg-sky-500";
+  } else if (!!courses?.some((cou) => cou.id === course.id) || false) {
+    buttonClass += " bg-gray-400";
+  } else {
+    buttonClass += " bg-blue-600";
+  }
 
   return (
     <ol className="flex flex-col">
@@ -62,6 +95,17 @@ const LocationList = ({
           </li>
         );
       })}
+      <li>
+        <div className="p-2 flex justify-center">
+          <button
+            className={buttonClass}
+            onClick={handleClick}
+            disabled={pending}
+          >
+            ゴール！
+          </button>
+        </div>
+      </li>
     </ol>
   );
 };
