@@ -7,7 +7,7 @@ export default async function AccountPage() {
     <div className="p-2 text-center">
       <h2 className="text-2xl font-bold">マイページ</h2>
       <div>
-        <div className="flex justify-between">
+        <div className="flex justify-around">
           {!!session?.user && <h3 className="text-3xl">{session.user.name}</h3>}
         </div>
         <div className="flex flex-wrap gap-4 p-4 justify-center">
