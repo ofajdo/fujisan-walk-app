@@ -7,7 +7,7 @@ import { CourseItem } from "@/components/course/CourseItem";
 import LocationList from "@/components/map/locationList";
 import { CourseMap } from "@/components/map/CourseMap";
 
-export const revalidate = 60;
+export const revalidate = 30000;
 
 const courses = await CoursesGet();
 

@@ -6,7 +6,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { useMemo } from "react";
 
-export const revalidate = 6000;
+export const revalidate = 30000;
 
 const courses = await CoursesGet();
 
