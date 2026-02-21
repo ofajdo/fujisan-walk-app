@@ -76,7 +76,7 @@ export function MapComponent({
         map.setPaintProperty(
           "route-dashed",
           "line-dasharray",
-          dashArraySequence[newStep]
+          dashArraySequence[newStep],
         );
       }
       requestAnimationFrame(animate);
@@ -90,7 +90,7 @@ export function MapComponent({
         showZoom: false,
         showCompass: true,
       }),
-      "bottom-right"
+      "bottom-right",
     );
 
     map.addControl(new FullscreenControl(), "bottom-right");
@@ -196,7 +196,7 @@ const CourseRouteMapComponent = ({
   return (
     <MapComponent viewState={viewState} onViewStateChange={setViewState}>
       {course.locations.map(({ id, place, number, title, description }) => {
-        if (!place?.latitude || !place?.longitude) return <></>;
+        if (!place?.latitude || !place?.longitude) return null;
         const LugLat = toLngLat(place);
         const isVisited = items?.some((v) => v.id === id);
         return (

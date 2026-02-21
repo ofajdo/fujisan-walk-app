@@ -34,11 +34,11 @@ export function Overview({
           !!items?.some((loc) => loc.id === location.id) && "opacity-70"
         }`}
       >
-        <div
-          className="w-36 max-w-[30%] flex items-center"
-          onClick={() => setIsOpen(true)}
-        >
-          {location?.image && (
+        {location?.image && (
+          <div
+            className="w-36 max-w-[30%] flex items-center"
+            onClick={() => setIsOpen(true)}
+          >
             <Image
               src={location.image}
               alt={`${location.title}｜${location.description}`}
@@ -46,8 +46,8 @@ export function Overview({
               height={240}
               className="rounded-lg"
             />
-          )}
-        </div>
+          </div>
+        )}
         <div className="flex-1 p-1 flex flex-col justify-around gap-25">
           <p className="text-center text-xs md:text-sm line-clamp-1">
             <span className="text-sm font-bold pr-2 font-mono">
@@ -61,7 +61,7 @@ export function Overview({
           <div className="flex justify-center flex-wrap">{children}</div>
         </div>
       </div>
-      {isOpen && (
+      {isOpen && !!location.image && (
         <div
           className="fixed p-4 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={() => setIsOpen(false)}

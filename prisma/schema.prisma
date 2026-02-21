@@ -31,7 +31,7 @@ model Location {
   id           String           @id
   number       Int
   date DateTime @default(now())
-  image        String
+  image        String?
   title        String
   description  String
   place Route?
@@ -42,12 +42,6 @@ model Location {
   reference    Location?        @relation("LocationReference", fields: [referenceId], references: [id])
   referencedBy Location[]       @relation("LocationReference")
 
-  nextId String?
-  next Location? @relation("LocationNext",fields: [nextId],references: [id])
-  before Location [] @relation("LocationNext")
-
-  qr Boolean
-  qrId String @default(cuid()) @unique
   courseId     String
   course       Course           @relation(fields: [courseId], references: [id])
 }
