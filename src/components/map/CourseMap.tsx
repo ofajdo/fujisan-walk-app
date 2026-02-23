@@ -5,6 +5,7 @@ import LocationList from "./locationList";
 import Map, { toLngLat } from "./Map";
 import { CourseItem } from "../course/CourseItem";
 import { Prisma } from "@prisma/client";
+import Reference from "../footer/Reference";
 
 type Course = Prisma.CourseGetPayload<{
   include: {
@@ -30,7 +31,7 @@ type Course = Prisma.CourseGetPayload<{
 
 export function CourseMap({ course }: { course: Course }) {
   const [center, setCenter] = useState<number[]>(
-    toLngLat(course.startingPoint.place)
+    toLngLat(course.startingPoint.place),
   );
 
   const SetCenter = (center: number[]) => {
@@ -68,6 +69,7 @@ export function CourseMap({ course }: { course: Course }) {
             SetCenter(location);
           }}
         />
+        <Reference />
       </Map>
     </>
   );

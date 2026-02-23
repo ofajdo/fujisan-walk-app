@@ -1,3 +1,4 @@
+import Reference from "@/components/footer/Reference";
 import { Detail } from "@/components/location/Detail";
 import CourseMap from "@/components/map/Map";
 import { CoursesGet } from "@/data/courses";
@@ -62,6 +63,8 @@ export default async function Location({
           </Link>
         </div>
         <div className="p-1">{location && <Detail location={location} />}</div>
+
+        <Reference />
       </CourseMap>
     </>
   );
