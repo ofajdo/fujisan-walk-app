@@ -1,11 +1,11 @@
-"use server";
 import prisma from "@/lib/db";
+import { cache } from "react";
 
 interface Location {
   id: string;
 }
 
-export async function LocationSerchById({ id }: Location) {
+export const LocationSerchById = cache(async ({ id }: Location) => {
   const location = await prisma.location.findUnique({
     where: { id },
     include: {
@@ -29,9 +29,9 @@ export async function LocationSerchById({ id }: Location) {
   });
 
   return location;
-}
+});
 
-export async function LocationsGet() {
+export const LocationsGet = cache(async () => {
   const location = await prisma.location.findMany({
     include: {
       place: true,
@@ -80,4 +80,4 @@ export async function LocationsGet() {
   });
 
   return location;
-}
+});

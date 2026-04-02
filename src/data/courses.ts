@@ -1,8 +1,7 @@
-"use server";
 import prisma from "@/lib/db";
-import { truncate } from "fs";
+import { cache } from "react";
 
-export const CoursesGet = async () => {
+export const CoursesGet = cache(async () => {
   const courses = await prisma.course.findMany({
     include: {
       startingPoint: {
@@ -36,9 +35,9 @@ export const CoursesGet = async () => {
     },
   });
   return courses;
-};
+});
 
-export const CourseGetById = async (id: string) => {
+export const CourseGetById = cache(async (id: string) => {
   const course = await prisma.course.findUnique({
     where: {
       id: id,
@@ -72,4 +71,4 @@ export const CourseGetById = async (id: string) => {
     },
   });
   return course;
-};
+});
