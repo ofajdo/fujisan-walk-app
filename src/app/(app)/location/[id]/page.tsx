@@ -5,6 +5,7 @@ import { CoursesGet } from "@/data/courses";
 import { LocationSerchById, LocationsGet } from "@/data/locations";
 import { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { useMemo } from "react";
 
 export const revalidate = 30000;
@@ -49,7 +50,7 @@ export default async function Location({
 
   if (!location) return <div className="p-4">見つかりませんでした。</div>;
 
-  if (!course) return null;
+  if (!course) return notFound();
 
   return (
     <>

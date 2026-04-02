@@ -1,11 +1,10 @@
-import { CourseGetById, CoursesGet } from "@/data/courses";
-import React from "react";
+import { CoursesGet } from "@/data/courses";
+
 import type { Prisma } from "@prisma/client";
-import { toLngLat } from "@/components/map/Map";
+
 import { Metadata } from "next";
-import { CourseItem } from "@/components/course/CourseItem";
-import LocationList from "@/components/map/locationList";
 import { CourseMap } from "@/components/map/CourseMap";
+import { notFound } from "next/navigation";
 
 export const revalidate = 30000;
 
@@ -56,6 +55,10 @@ type Course = Prisma.CourseGetPayload<{
 export default async function Course({ params }: Props) {
   const { id } = await params;
   const course = courses.find((c) => c.id === id);
+
+  if (!course) {
+    notFound();
+  }
 
   if (!course) return null;
   return <CourseMap course={course}></CourseMap>;
