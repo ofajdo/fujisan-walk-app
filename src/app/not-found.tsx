@@ -2,7 +2,14 @@
 import Link from "next/link";
 import { TbMapSearch } from "react-icons/tb";
 import { Header } from "@/components/Header/Header"; // ← 出したいヘッダーを直接インポート
+import { Metadata } from "next";
 
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: `お探しのページは見つかりませんでした。 - 富士宮市歩く博物館デジタル`,
+    description: `404 NOT FOUND`,
+  };
+}
 export default function NotFound() {
   return (
     // 【重要】 fixed inset-0 z-[9999] bg-white で親レイアウトを完全に覆い隠す
