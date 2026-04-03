@@ -23,11 +23,17 @@ export const generateStaticParams = () => {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const course = courses.find((c) => c.id === id);
-
-  return {
-    title: `${course?.name} ${course?.title} - 富士宮市歩く博物館デジタル`,
-    description: `${course?.districts}地区 - ${course?.description}`,
-  };
+  if (course) {
+    return {
+      title: `${course?.name} ${course?.title} - 富士宮市歩く博物館デジタル`,
+      description: `${course?.districts}地区 - ${course?.description}`,
+    };
+  } else {
+    return {
+      title: `お探しのコースは見つかりませんでした - 富士宮市歩く博物館デジタル`,
+      description: `お探しのコースは見つかりませんでした。`,
+    };
+  }
 }
 
 type Course = Prisma.CourseGetPayload<{

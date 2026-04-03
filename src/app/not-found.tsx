@@ -6,7 +6,7 @@ import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: `お探しのページは見つかりませんでした。 - 富士宮市歩く博物館デジタル`,
+    title: `お探しのページは見つかりませんでした - 富士宮市歩く博物館デジタル`,
     description: `404 NOT FOUND`,
   };
 }

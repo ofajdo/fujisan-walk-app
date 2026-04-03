@@ -26,11 +26,17 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   const location = locations.find((l) => l.id === id);
-
-  return {
-    title: `${location?.title} - 富士宮市歩く博物館デジタル`,
-    description: `${location?.course?.name} ${location?.course?.title} - ${location?.description}`,
-  };
+  if (location) {
+    return {
+      title: `${location?.title} - 富士宮市歩く博物館デジタル`,
+      description: `${location?.course?.name} ${location?.course?.title} - ${location?.description}`,
+    };
+  } else {
+    return {
+      title: `お探しの場所は見つかりませんでした - 富士宮市歩く博物館デジタル`,
+      description: `お探しの場所は見つかりませんでした。`,
+    };
+  }
 }
 
 const toLngLat = (place: { latitude: string; longitude: string } | null) => [
@@ -48,8 +54,7 @@ export default async function Location({
 
   const course = courses.find((c) => c.id === location?.course.id);
 
-  if (!location) return <div className="p-4">見つかりませんでした。</div>;
-
+  if (!location) return notFound();
   if (!course) return notFound();
 
   return (
