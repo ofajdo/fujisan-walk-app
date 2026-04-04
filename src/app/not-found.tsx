@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { TbMapSearch } from "react-icons/tb";
-import { Header } from "../../components/Header/Header";
+import { Header } from "@/components/header/Header";
 import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
