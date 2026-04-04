@@ -5,7 +5,7 @@ import LocationList from "./locationList";
 import Map, { toLngLat } from "./Map";
 import { CourseItem } from "../course/CourseItem";
 import { Prisma } from "@prisma/client";
-import Reference from "../footer/Reference";
+import Footer from "../footer/Footer";
 
 type Course = Prisma.CourseGetPayload<{
   include: {
@@ -69,7 +69,7 @@ export function CourseMap({ course }: { course: Course }) {
             SetCenter(location);
           }}
         />
-        <Reference />
+        <Footer />
       </Map>
     </>
   );

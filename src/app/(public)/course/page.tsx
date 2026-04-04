@@ -2,7 +2,7 @@ import { CoursesGet } from "@/data/courses";
 import { CourseList } from "@/components/course/CourseList";
 import type { Prisma } from "@prisma/client";
 import { Metadata } from "next";
-import Reference from "@/components/footer/Reference";
+import Footer from "@/components/footer/Footer";
 
 export const revalidate = 30000;
 
@@ -47,7 +47,7 @@ const Course = async () => {
       </div>
       <CourseList courses={courses}></CourseList>
       <div>
-        <Reference />
+        <Footer />
       </div>
     </div>
   );
