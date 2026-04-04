@@ -33,6 +33,7 @@ export function CourseMap({ course }: { course: Course }) {
   const [center, setCenter] = useState<number[]>(
     toLngLat(course.startingPoint.place),
   );
+  const [isOpen, setIsOpen] = useState(false);
 
   const SetCenter = (center: number[]) => {
     setCenter(center);
@@ -63,6 +64,38 @@ export function CourseMap({ course }: { course: Course }) {
             </div>
           </a>
         </div>
+        {course.originalPDF && (
+          <>
+            <div className="flex justify-center p-1">
+              <button
+                onClick={() => setIsOpen(true)}
+                className="w-full bg-gray-100 p-2 font-bold rounded-full"
+              >
+                元PDFを表示する
+              </button>
+            </div>
+            {/* モーダル */}
+            {isOpen && (
+              <div
+                className="fixed p-8 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+                onClick={() => setIsOpen(false)}
+              >
+                <div
+                  className="bg-white p-2 max-w-lg w-full"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="w-full h-[80vh] flex flex-col">
+                    <embed
+                      type="application/pdf"
+                      src={course.originalPDF}
+                      className="w-full flex-1 rounded-lg shadow-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
         <LocationList
           course={course}
           onWalked={(location: any) => {

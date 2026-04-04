@@ -23,6 +23,7 @@ model Course {
   locations   Location[]
   routes Route[]
   userAchivers UserCourse[]
+  originalPDF String?
 
   startingPointId String
   startingPoint StartingPoint @relation(fields: [startingPointId],references: [id])

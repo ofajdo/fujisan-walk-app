@@ -1,7 +1,6 @@
-// app/not-found.tsx または app/(main)/not-found.tsx
 import Link from "next/link";
 import { TbMapSearch } from "react-icons/tb";
-import { Header } from "@/components/Header/Header"; // ← 出したいヘッダーを直接インポート
+import { Header } from "../../components/Header/Header";
 import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {

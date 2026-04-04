@@ -1,4 +1,4 @@
-import { Header, Logo } from "@/components/Header/Header";
+import { Header, Logo } from "@/components/header/Header";
 
 export default function MapLayout({ children }: { children: React.ReactNode }) {
   return (
