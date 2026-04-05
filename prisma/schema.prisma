@@ -72,7 +72,7 @@ model Route {
   startingPointId String? @unique
   courseId String
 
-  display Boolean @default(true)
+  display Boolean @default(false)
 
   location Location? @relation(fields: [locationId],references: [id])
   startingPoint StartingPoint? @relation(fields: [startingPointId],references: [id])

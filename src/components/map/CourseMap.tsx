@@ -91,6 +91,16 @@ export function CourseMap({ course }: { course: Course }) {
                       className="w-full flex-1 rounded-lg shadow-sm"
                     />
                   </div>
+                  <div className="w-full max-w-4xl mx-auto mb-2 text-right">
+                    <a
+                      href={course.originalPDF}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-blue-600 hover:text-blue-800 underline"
+                    >
+                      PDFを別画面で開く / 保存する
+                    </a>
+                  </div>
                 </div>
               </div>
             )}
@@ -99,7 +109,9 @@ export function CourseMap({ course }: { course: Course }) {
         <LocationList
           course={course}
           onWalked={(location: any) => {
-            SetCenter(location);
+            if (location) {
+              console.log("aa");
+            }
           }}
         />
         <Footer />
