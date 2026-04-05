@@ -35,7 +35,7 @@ const Home = async () => {
           富士宮市歩く博物館デジタルへようこそ
         </h2>
         <p className="text-center">
-          富士宮市歩く博物館のコースの紹介をしています。
+          富士宮市の「歩く博物館」をデジタル化しています。
         </p>
         <div>
           <h3 className="mb-1 p-1 text-center font-medium text-blue-900 text-xl">
