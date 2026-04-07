@@ -29,7 +29,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "コース一覧 - 富士宮市歩く博物館デジタル",
   description:
-    "富士宮市歩く博物館をデジタル化したものです。富士宮市の歩く博物館の紹介をしています。歩くルートをデジタルのマップで見ることができます。パンフレットとガイドブックを参考にしています",
+    "富士宮市歩く博物館をデジタル化したものです。こちらはコース一覧です。出典：「歩く博物館パンフレット」・「歩く博物館ガイドブック　訂正版」",
   verification: {
     google: "pN0H3UKaXSIYAoZW9gR1IEyLjFql2k2mErkNYOn9Rbc",
   },

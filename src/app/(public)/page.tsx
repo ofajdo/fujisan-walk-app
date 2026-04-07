@@ -56,8 +56,9 @@ const Home = async () => {
         </div>
         <div>
           <h3 className="mb-1 p-1 text-center font-medium text-blue-900 text-xl">
-            コース一覧 （全24コース中 {courses.length}コース）
+            コース一覧
           </h3>
+          <p>（全{courses.length}コース）</p>
           <Link
             href="/course"
             className="p-3 w-full block text-center bg-gray-100 text-base font-medium my-2"
