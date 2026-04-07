@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  allowedDevOrigins: ["kiuchiryou-macbook-pro.local"],
+  allowedDevOrigins: [],
 };
 
 export default nextConfig;
