@@ -40,8 +40,8 @@ export async function generateMetadata({
 }
 
 const toLngLat = (place: { latitude: string; longitude: string } | null) => [
-  Number(place?.longitude || "35.222"),
-  Number(place?.latitude || "138.621"),
+  Number(place?.longitude || "138.621"),
+  Number(place?.latitude || "35.222"),
 ];
 
 export default async function Location({
@@ -59,7 +59,12 @@ export default async function Location({
 
   return (
     <>
-      <CourseMap course={course} center={toLngLat(location.place)}>
+      <CourseMap
+        course={course}
+        center={toLngLat(
+          location.place ? location.place : course.startingPoint.place,
+        )}
+      >
         <div className="flex gap-2 text-center p-2">
           <Link
             className="flex-1 border-2 border-gray-400 rounded-md p-2"
