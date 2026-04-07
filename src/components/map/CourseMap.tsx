@@ -110,7 +110,7 @@ export function CourseMap({ course }: { course: Course }) {
           course={course}
           onWalked={(location: any) => {
             if (location) {
-              console.log("aa");
+              setCenter(location);
             }
           }}
         />

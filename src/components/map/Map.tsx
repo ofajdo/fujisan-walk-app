@@ -40,10 +40,10 @@ type CourseMapProps = {
   center: number[];
 };
 export const toLngLat = (
-  place: { latitude: string; longitude: string } | null
+  place: { latitude: string; longitude: string } | null,
 ) => [
-  Number(place?.longitude || "35.222"),
-  Number(place?.latitude || "138.621"),
+  Number(place?.longitude || "138.621"),
+  Number(place?.latitude || "35.222"),
 ];
 
 const Map: React.FC<CourseMapProps> = ({ course, children, center }) => {
