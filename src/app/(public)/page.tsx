@@ -2,12 +2,17 @@ import { CoursesGet } from "@/data/courses";
 import { CourseList } from "@/components/course/CourseList";
 import type { Prisma } from "@prisma/client";
 import Link from "next/link";
+import { MapCourseList } from "@/components/map/ReactMapGl/MapCourseList";
 
 export const revalidate = 30000;
 
 type Course = Prisma.CourseGetPayload<{
   include: {
-    startingPoint: true;
+    startingPoint: {
+      include: {
+        place: true;
+      };
+    };
     routes: true;
     points: {
       include: {
@@ -54,17 +59,25 @@ const Home = async () => {
             </a>
           </p>
         </div>
-        <div>
-          <h3 className="mb-1 p-1 text-center font-medium text-blue-900 text-xl">
-            コース一覧
-          </h3>
-          <p>（全{courses.length}コース）</p>
+        <div className="flex flex-col gap-3">
+          <div>
+            <h3 className="mb-1 p-1 text-center font-medium text-blue-900 text-xl">
+              コース一覧
+            </h3>
+            <p className="text-center">（全{courses.length}コース）</p>
+          </div>
           <Link
             href="/course"
-            className="p-3 w-full block text-center bg-gray-100 text-base font-medium my-2"
+            className="p-3 w-full block text-center bg-gray-100 text-base font-medium"
           >
             コース一覧
           </Link>
+          <div className="w-full h-96">
+            <MapCourseList
+              courses={courses}
+              center={[138.621, 35.222]}
+            ></MapCourseList>
+          </div>
           <CourseList courses={courses}></CourseList>
         </div>
       </div>

@@ -14,14 +14,14 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { CompassControl } from "maplibre-gl-compass";
 import "maplibre-gl-compass/style.css";
 import { Prisma } from "@prisma/client";
-import { toLngLat } from "../Map";
+import { toLngLat } from "./MapUtils";
 import { useLiveQuery } from "dexie-react-hooks";
 import { locationsDB } from "@/lib/localdb";
-import { usePathname } from "next/navigation";
+import { MapUtils } from "./MapUtils";
 
 const mapStyle = process.env.NEXT_PUBLIC_MAP_STYLE!;
 
-type MapComponentProps = {
+type MapCourseProps = {
   viewState: ViewState;
   onViewStateChange: (vs: ViewState) => void;
   children?: React.ReactNode;
@@ -43,18 +43,16 @@ const dashArraySequence = [
   [0, 3, 3, 1],
   [0, 3.5, 3, 0.5],
 ];
-export function MapComponent({
+export function MapCourse({
   viewState,
   onViewStateChange,
   children,
-}: MapComponentProps) {
+}: MapCourseProps) {
   const mapRef = React.useRef<MapRef | null>(null);
   const stepRef = React.useRef(0);
 
   const handleLoad = React.useCallback(() => {
-    if (!mapRef.current) return null;
-    const map = mapRef.current.getMap();
-
+    const map = MapUtils(mapRef);
     if (!map) return;
 
     const animate = (timestamp: number) => {
@@ -83,45 +81,6 @@ export function MapComponent({
     };
 
     requestAnimationFrame(animate);
-
-    map.addControl(
-      new NavigationControl({
-        visualizePitch: true,
-        showZoom: false,
-        showCompass: true,
-      }),
-      "bottom-right",
-    );
-
-    map.addControl(new FullscreenControl(), "bottom-right");
-
-    const geolocate = new GeolocateControl({
-      positionOptions: { enableHighAccuracy: true },
-      trackUserLocation: true,
-      showUserLocation: true,
-      showAccuracyCircle: true,
-      fitBoundsOptions: { maxZoom: 17 },
-    });
-    map.addControl(geolocate, "bottom-right");
-
-    const compass = new CompassControl();
-    map.addControl(compass, "bottom-right");
-
-    let isOperating = false;
-    map.on("touchstart", () => (isOperating = true));
-    map.on("touchend", () => (isOperating = false));
-
-    compass.on("turnon", () => {
-      if ((geolocate as any)._watchState !== "ACTIVE_LOCK") {
-        geolocate.trigger();
-      }
-    });
-
-    geolocate.on("userlocationlostfocus", () => {
-      if (!isOperating) {
-        geolocate.trigger();
-      }
-    });
   }, []);
 
   return (
@@ -160,7 +119,7 @@ type Course = Prisma.CourseGetPayload<{
   };
 }>;
 
-const CourseRouteMapComponent = ({
+const CourseRouteMapCourse = ({
   center,
   course,
 }: {
@@ -194,7 +153,7 @@ const CourseRouteMapComponent = ({
   }, [center]);
 
   return (
-    <MapComponent viewState={viewState} onViewStateChange={setViewState}>
+    <MapCourse viewState={viewState} onViewStateChange={setViewState}>
       {course.locations.map(({ id, place, number, title, description }) => {
         if (!place?.latitude || !place?.longitude) return null;
         const LugLat = toLngLat(place);
@@ -250,8 +209,8 @@ const CourseRouteMapComponent = ({
           }}
         />
       </Source>
-    </MapComponent>
+    </MapCourse>
   );
 };
 
-export const CourseRouteMap = React.memo(CourseRouteMapComponent);
+export const CourseRouteMap = React.memo(CourseRouteMapCourse);

@@ -24,15 +24,6 @@ type Location = Prisma.LocationGetPayload<{
 
 type Item = { id: string };
 
-function arraysEqual(arr1: Item[], arr2: Item[]): boolean {
-  if (arr1.length !== arr2.length) return false;
-
-  const sorted1 = arr1.map((item) => item.id).toSorted();
-  const sorted2 = arr2.map((item) => item.id).toSorted();
-
-  return sorted1.every((id, index) => id === sorted2[index]);
-}
-
 export const SyncUserLocation = ({
   children,
 }: {
@@ -54,7 +45,7 @@ export const SyncUserLocation = ({
         await locationsDB.items.bulkAdd(
           filteredData.map((item) => ({
             ...item,
-          }))
+          })),
         );
 
         await PostUserLocations({
@@ -88,7 +79,7 @@ export const SyncUserCourse = ({ children }: { children: React.ReactNode }) => {
         await coursesDB.items.bulkAdd(
           filteredData.map((item) => ({
             ...item,
-          }))
+          })),
         );
 
         await PostUserCourses({

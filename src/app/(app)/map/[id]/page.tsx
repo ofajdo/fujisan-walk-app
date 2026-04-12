@@ -3,7 +3,7 @@ import { CoursesGet } from "@/data/courses";
 import type { Prisma } from "@prisma/client";
 
 import { Metadata } from "next";
-import { CourseMap } from "@/components/map/CourseMap";
+import { CourseMap } from "@/components/map/Course";
 import { notFound } from "next/navigation";
 
 export const revalidate = 30000;

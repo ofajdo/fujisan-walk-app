@@ -1,6 +1,6 @@
 import Footer from "@/components/footer/Footer";
 import { Detail } from "@/components/location/Detail";
-import CourseMap from "@/components/map/Map";
+import CourseMap from "@/components/map/CourseLayout";
 import { CoursesGet } from "@/data/courses";
 import { LocationSerchById, LocationsGet } from "@/data/locations";
 import { Metadata } from "next";

@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import LocationList from "./locationList";
-import Map, { toLngLat } from "./Map";
+import Map from "./CourseLayout";
+import { toLngLat } from "./ReactMapGl/MapUtils";
 import { CourseItem } from "../course/CourseItem";
 import { Prisma } from "@prisma/client";
 import Footer from "../footer/Footer";

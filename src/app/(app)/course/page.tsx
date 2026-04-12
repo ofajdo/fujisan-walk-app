@@ -3,12 +3,17 @@ import { CourseList } from "@/components/course/CourseList";
 import type { Prisma } from "@prisma/client";
 import { Metadata } from "next";
 import Footer from "@/components/footer/Footer";
+import Map from "@/components/map/CouseMapLayout";
 
 export const revalidate = 30000;
 
 type Course = Prisma.CourseGetPayload<{
   include: {
-    startingPoint: true;
+    startingPoint: {
+      include: {
+        place: true;
+      };
+    };
     routes: true; // orderByは型に影響しないので true でOK
     points: {
       include: {
@@ -39,16 +44,20 @@ const Course = async () => {
   const courses: Course[] = await CoursesGet().catch(() => []);
 
   return (
-    <div className="text-center">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-2 text-center">コース一覧</h1>
-        <p>（全{courses.length}コース）</p>
-      </div>
-      <CourseList courses={courses}></CourseList>
-      <div>
-        <Footer />
-      </div>
-    </div>
+    <>
+      <Map courses={courses}>
+        <div className="text-center p-2">
+          <div className="p-2">
+            <h1 className="text-2xl font-bold mb-2 text-center">コース一覧</h1>
+            <p>（全{courses.length}コース）</p>
+          </div>
+          <CourseList courses={courses}></CourseList>
+          <div>
+            <Footer />
+          </div>
+        </div>
+      </Map>
+    </>
   );
 };
 
