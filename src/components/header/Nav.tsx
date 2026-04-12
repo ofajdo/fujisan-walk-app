@@ -50,7 +50,7 @@ export function NavItem({
       </Link>
       {children && (
         <div className="hidden hover:flex peer-hover:flex absolute pt-3 w-full flex-col items-center content-center">
-          <div className="max-w-96 p-2 bg-gray-100 rounded backdrop-blur-md bg-opacity-90 shadow flex flex-col gap-2">
+          <div className="max-w-96 max-h-[85svh] overflow-y-scroll scroll p-2 bg-gray-100 rounded backdrop-blur-md bg-opacity-90 shadow flex flex-col gap-2">
             {children}
           </div>
         </div>
