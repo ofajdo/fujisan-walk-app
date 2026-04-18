@@ -40,14 +40,16 @@ const Home = async () => {
           富士宮市歩く博物館デジタルへようこそ
         </h2>
         <p className="text-center">
-          富士宮市の「歩く博物館」をデジタル化しています。
+          富士宮市の「歩く博物館」をデジタル化しています
+          <br />
+          富士宮市の「歩く博物館」をもっと多くの人に歩いてもらいたいと思い、個人が独自に作成・運営しているサイトです。
         </p>
         <div>
           <h3 className="mb-1 p-1 text-center font-medium text-blue-900 text-xl">
             出典
           </h3>
           <p className="text-sm p-2 line-height">
-            このサイトは、富士宮市の「歩く博物館パンフレット」・「歩く博物館ガイドブック　訂正版」をもとに作成しています。
+            本サイトは、富士宮市発行の「歩く博物館パンフレット」および「歩く博物館ガイドブック訂正版」をもとに作成・転載しています。
             <br />
             <a
               href="https://www.city.fujinomiya.lg.jp/3010400000/p001925.html"

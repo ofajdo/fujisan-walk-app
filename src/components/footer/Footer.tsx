@@ -7,7 +7,9 @@ export default () => {
       <div className="flex flex-col items-center p-3">
         <img src={logo.src} className="max-w-48"></img>
         <p className="text-center">
-          富士宮市の「歩く博物館」をデジタル化したものです。
+          富士宮市の「歩く博物館」をデジタル化しています
+          <br></br>
+          個人が独自に作成・運営しているサイトです。
         </p>
       </div>
       <div className="flex flex-wrap">
