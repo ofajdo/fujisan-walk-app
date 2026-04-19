@@ -24,18 +24,28 @@ import { IoMdTime } from "react-icons/io";
 
 import { useState } from "react";
 import Link from "next/link";
+import { coursesDB } from "@/lib/localdb";
+import { useLiveQuery } from "dexie-react-hooks";
+import { FaCircleCheck } from "react-icons/fa6";
 
 export function CourseItem({ course }: { course: Course }) {
+  const items = useLiveQuery(() => coursesDB.items.toArray()) || [];
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-full flex flex-col sm:flex-row sm:self-center items-center">
+    <div className="w-full flex flex-col sm:flex-row sm:self-center items-center relative">
+      {!!items?.some((cou) => cou.id === course.id) && <></>}
       <div className="grid place-items-center">
         <div className="flex justify-center sm:flex-col items-center gap-2 text-xs text-center">
           <span className="text-blue-500 text-3xl sm:text-4xl font-bold px-2">
             {course.name}
           </span>
           {course.districts}地区
+          {!!items?.some((cou) => cou.id === course.id) && (
+            <div className="text-green-500 text-lg">
+              <FaCircleCheck />
+            </div>
+          )}
         </div>
       </div>
       <div className="px-1">

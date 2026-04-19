@@ -7,6 +7,9 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import "maplibre-gl-compass/style.css";
 import { Prisma } from "@prisma/client";
 import { MapUtils } from "./MapUtils";
+import { useLiveQuery } from "dexie-react-hooks";
+import { coursesDB } from "@/lib/localdb";
+import { FaCircleCheck } from "react-icons/fa6";
 
 const mapStyle = process.env.NEXT_PUBLIC_MAP_STYLE!;
 
@@ -79,6 +82,8 @@ const CourseRouteMapCourse = ({
     padding: { bottom: 0, top: 0, left: 0, right: 0 },
   });
 
+  const items = useLiveQuery(() => coursesDB.items.toArray()) || [];
+
   React.useEffect(() => {
     setViewState({
       ...viewState,
@@ -107,7 +112,7 @@ const CourseRouteMapCourse = ({
             >
               <div className="flex flex-col items-center">
                 <div
-                  className={`w-[32px] h-[32px] rounded-full text-base font-mono text-center leading-[28px] bg-gray-800 text-gray-200 border-2 border-gray-200`}
+                  className={`w-[32px] h-[32px] rounded-full text-base font-mono text-center leading-[28px] ${!items?.some((cou) => cou.id === course.id) ? "bg-gray-800" : "bg-green-500"} text-gray-200 border-2 border-gray-200`}
                 >
                   {course.name}
                 </div>
@@ -124,11 +129,16 @@ const CourseRouteMapCourse = ({
                   className="block text-center outline-none"
                   href={`/map/${course.id}`}
                 >
-                  <p>
-                    <span className="text-blue-500 font-mono font-bold px-2">
+                  <p className="inline-flex gap-2">
+                    <span className="text-blue-500 font-mono font-bold">
                       {course.name}
                     </span>
                     {course.districts}地区
+                    {!!items?.some((cou) => cou.id === course.id) && (
+                      <div className="text-green-500 text-lg">
+                        <FaCircleCheck />
+                      </div>
+                    )}
                   </p>
                   <p className="font-medium text-md text-balance">
                     {course.title}
