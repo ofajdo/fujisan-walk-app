@@ -13,7 +13,7 @@ const notoSansJP = Noto_Sans_JP({
 export const metadata: Metadata = {
   title: "富士宮市歩く博物館デジタル",
   description:
-    "富士宮市歩く博物館をデジタル化したものです。個人が作成・運営しています。出典：「歩く博物館パンフレット」・「歩く博物館ガイドブック　訂正版」",
+    "富士宮市歩く博物館をデジタル化したものです。個人が作成・運営しています。出典：「歩く博物館パンフレット」・「歩く博物館ガイドブック　改訂版」",
   verification: {
     google: "pN0H3UKaXSIYAoZW9gR1IEyLjFql2k2mErkNYOn9Rbc",
   },

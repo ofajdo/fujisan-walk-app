@@ -4,7 +4,7 @@ export default () => {
       <div className="font-medium">出典</div>
       <div className="text-gray-700 text-xs">
         <p>歩く博物館パンフレット</p>
-        <p>歩く博物館ガイドブック　訂正版</p>
+        <p>歩く博物館ガイドブック　改訂版</p>
       </div>
       <div>
         <a
