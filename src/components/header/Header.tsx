@@ -33,7 +33,7 @@ export function Header() {
             label="トップ"
           />
           <CourseMenu courses={courses} />
-          <AccountMenu />
+          {/* <AccountMenu /> */}
         </div>
       </div>
     </div>
