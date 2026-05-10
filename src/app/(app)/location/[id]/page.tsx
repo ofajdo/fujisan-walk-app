@@ -64,6 +64,7 @@ export default async function Location({
         center={toLngLat(
           location.place ? location.place : course.startingPoint.place,
         )}
+        is3D={false}
       >
         <div className="flex gap-2 text-center p-2">
           <Link
