@@ -94,7 +94,7 @@ export function MapCourse({
       mapStyle={mapStyle}
       onLoad={handleLoad}
       terrain={
-        is3D ? { source: "my-terrain-source", exaggeration: 2.5 } : undefined
+        is3D ? { source: "my-terrain-source", exaggeration: 3 } : undefined
       }
     >
       <Source
@@ -106,7 +106,7 @@ export function MapCourse({
         encoding="terrarium"
         tileSize={256}
         maxzoom={10}
-        minzoom={7}
+        minzoom={9}
       />
       {children && children}
     </Map>
@@ -193,7 +193,12 @@ const CourseRouteMapCourse = ({
         const LugLat = toLngLat(place);
         const isVisited = items?.some((v) => v.id === id);
         return (
-          <Marker key={id} longitude={LugLat[0]} latitude={LugLat[1]}>
+          <Marker
+            key={id}
+            longitude={LugLat[0]}
+            latitude={LugLat[1]}
+            pitchAlignment="map"
+          >
             <div className="flex flex-col content-center">
               <div
                 className={`w-[24px] h-[24px] rounded-full text-sm font-mono text-center leading-[24px] ${
@@ -212,6 +217,7 @@ const CourseRouteMapCourse = ({
       <Marker
         longitude={Number(course.startingPoint.place?.longitude)}
         latitude={Number(course.startingPoint.place?.latitude)}
+        pitchAlignment="map"
       >
         <div className="flex flex-col items-center">
           <h3 className="text-sm font-medium p-2 text-white bg-blue-700 rounded-3xl">
