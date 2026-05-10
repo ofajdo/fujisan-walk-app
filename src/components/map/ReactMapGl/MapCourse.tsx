@@ -84,6 +84,16 @@ export function MapCourse({
 
     requestAnimationFrame(animate);
   }, []);
+  React.useEffect(() => {
+    const map = mapRef.current?.getMap();
+    if (!map || !map.isStyleLoaded()) return;
+
+    if (is3D) {
+      map.setTerrain({ source: "my-terrain-source", exaggeration: 3 });
+    } else {
+      map.setTerrain(null);
+    }
+  }, [is3D]);
 
   return (
     <Map
