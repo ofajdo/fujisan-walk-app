@@ -7,6 +7,7 @@ import { toLngLat } from "./ReactMapGl/MapUtils";
 import { CourseItem } from "../course/CourseItem";
 import { Prisma } from "@prisma/client";
 import Footer from "../footer/Footer";
+import Toggle3D from "./Toggle3D";
 
 type Course = Prisma.CourseGetPayload<{
   include: {
@@ -31,6 +32,7 @@ type Course = Prisma.CourseGetPayload<{
 }>;
 
 export function CourseMap({ course }: { course: Course }) {
+  const [is3D, setIs3D] = useState(false);
   const [center, setCenter] = useState<number[]>(
     toLngLat(course.startingPoint.place),
   );
@@ -42,7 +44,7 @@ export function CourseMap({ course }: { course: Course }) {
 
   return (
     <>
-      <Map course={course!} center={center}>
+      <Map course={course!} center={center} is3D={is3D}>
         <div className="p-1">
           {course && <CourseItem course={course} />}
           <a
@@ -67,13 +69,14 @@ export function CourseMap({ course }: { course: Course }) {
         </div>
         {course.originalPDF && (
           <>
-            <div className="flex justify-center p-1">
+            <div className="flex items-center p-1 flex-col gap-2">
               <button
                 onClick={() => setIsOpen(true)}
                 className="w-full bg-gray-100 p-2 font-bold rounded-full"
               >
                 元PDFを表示する
               </button>
+              <Toggle3D is3D={is3D} onChange={setIs3D} />
             </div>
             {/* モーダル */}
             {isOpen && (

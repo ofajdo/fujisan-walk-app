@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.maplibregl-ctrl-group {
+  border-radius: 1000px !important;
+}
+
+.maplibregl-ctrl-bottom-right .maplibregl-ctrl {
+  margin: 0 5px 5px 0 !important;
+}
+
+.maplibregl-ctrl-group button {
+  width: 45px !important;
+  height: 45px !important;
+}
+
+.maplibregl-ctrl-icon {
+  background-size: 70% !important;
+}
+
+.maplibregl-ctrl-group button:focus {
+  outline: none;
+}

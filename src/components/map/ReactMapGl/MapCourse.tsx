@@ -24,6 +24,7 @@ const mapStyle = process.env.NEXT_PUBLIC_MAP_STYLE!;
 type MapCourseProps = {
   viewState: ViewState;
   onViewStateChange: (vs: ViewState) => void;
+  is3D: boolean;
   children?: React.ReactNode;
 };
 
@@ -46,6 +47,7 @@ const dashArraySequence = [
 export function MapCourse({
   viewState,
   onViewStateChange,
+  is3D,
   children,
 }: MapCourseProps) {
   const mapRef = React.useRef<MapRef | null>(null);
@@ -91,7 +93,21 @@ export function MapCourse({
       style={{ width: "100%", height: "100%" }}
       mapStyle={mapStyle}
       onLoad={handleLoad}
+      terrain={
+        is3D ? { source: "my-terrain-source", exaggeration: 2.5 } : undefined
+      }
     >
+      <Source
+        id="my-terrain-source"
+        type="raster-dem"
+        tiles={[
+          "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png",
+        ]}
+        encoding="terrarium"
+        tileSize={256}
+        maxzoom={10}
+        minzoom={7}
+      />
       {children && children}
     </Map>
   );
@@ -122,9 +138,11 @@ type Course = Prisma.CourseGetPayload<{
 const CourseRouteMapCourse = ({
   center,
   course,
+  is3D,
 }: {
   center: number[];
   course: Course;
+  is3D: boolean;
 }) => {
   const routeGeoJson: Feature<LineString> = {
     type: "Feature",
@@ -151,9 +169,25 @@ const CourseRouteMapCourse = ({
       latitude: center[1],
     });
   }, [center]);
+  React.useEffect(() => {
+    if (!is3D)
+      setViewState({
+        ...viewState,
+        pitch: 0,
+      });
+    if (is3D)
+      setViewState({
+        ...viewState,
+        pitch: 60,
+      });
+  }, [is3D]);
 
   return (
-    <MapCourse viewState={viewState} onViewStateChange={setViewState}>
+    <MapCourse
+      viewState={viewState}
+      onViewStateChange={setViewState}
+      is3D={is3D}
+    >
       {course.locations.map(({ id, place, number, title, description }) => {
         if (!place?.latitude || !place?.longitude) return null;
         const LugLat = toLngLat(place);

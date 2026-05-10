@@ -31,9 +31,10 @@ type CourseMapProps = {
   course: Course;
   children: ReactNode;
   center: number[];
+  is3D: boolean;
 };
 
-const Map: React.FC<CourseMapProps> = ({ course, children, center }) => {
+const Map: React.FC<CourseMapProps> = ({ course, children, center, is3D }) => {
   const startingPoint = course?.startingPoint;
 
   return (
@@ -42,6 +43,7 @@ const Map: React.FC<CourseMapProps> = ({ course, children, center }) => {
         <CourseRouteMap
           center={center ? center : toLngLat(startingPoint.place)}
           course={course}
+          is3D={is3D}
         />
       </div>
 
