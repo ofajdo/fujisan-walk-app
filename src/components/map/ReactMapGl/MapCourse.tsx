@@ -84,14 +84,27 @@ export function MapCourse({
 
     requestAnimationFrame(animate);
   }, []);
+
   React.useEffect(() => {
     const map = mapRef.current?.getMap();
-    if (!map || !map.isStyleLoaded()) return;
+    if (!map) return;
 
-    if (is3D) {
-      map.setTerrain({ source: "my-terrain-source", exaggeration: 3 });
+    const toggleTerrain = () => {
+      if (is3D) {
+        if (map.getSource("my-terrain-source")) {
+          map.setTerrain({ source: "my-terrain-source", exaggeration: 3 });
+        } else {
+          map.once("sourcedata", toggleTerrain);
+        }
+      } else {
+        map.setTerrain(null);
+      }
+    };
+
+    if (map.isStyleLoaded()) {
+      toggleTerrain();
     } else {
-      map.setTerrain(null);
+      map.once("style.load", toggleTerrain);
     }
   }, [is3D]);
 
@@ -103,9 +116,10 @@ export function MapCourse({
       style={{ width: "100%", height: "100%" }}
       mapStyle={mapStyle}
       onLoad={handleLoad}
-      terrain={
-        is3D ? { source: "my-terrain-source", exaggeration: 3 } : undefined
-      }
+      terrain={{
+        source: "my-terrain-source",
+        exaggeration: is3D ? 3 : 0,
+      }}
     >
       <Source
         id="my-terrain-source"
@@ -188,7 +202,7 @@ const CourseRouteMapCourse = ({
     if (is3D)
       setViewState({
         ...viewState,
-        pitch: 60,
+        pitch: 45,
       });
   }, [is3D]);
 
