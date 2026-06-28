@@ -65,8 +65,7 @@ const LocationList = ({
     setTimeout(() => setPending(false), 500); // 0.5秒後に元に戻す（必要に応じて調整）
   };
 
-  let buttonClass =
-    "text-xl py-2 px-6 text-sm font-medium text-white rounded-full";
+  let buttonClass = "py-2 px-6 text-xl font-medium text-white rounded-full";
   if (pending) {
     buttonClass += " bg-sky-500";
   } else if (!!courses?.some((cou) => cou.id === course.id) || false) {

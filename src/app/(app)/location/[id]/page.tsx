@@ -2,11 +2,10 @@ import Footer from "@/components/footer/Footer";
 import { Detail } from "@/components/location/Detail";
 import CourseMap from "@/components/map/CourseLayout";
 import { CoursesGet } from "@/data/courses";
-import { LocationSerchById, LocationsGet } from "@/data/locations";
+import { LocationsGet } from "@/data/locations";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { useMemo } from "react";
 
 export const revalidate = 30000;
 

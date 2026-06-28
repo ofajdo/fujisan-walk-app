@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family:
+    "Noto Sans JP", "Hiragino Sans", "Yu Gothic", "YuGothic",
+    "Meiryo", system-ui, sans-serif;
+}
+
 .maplibregl-ctrl-group {
   border-radius: 1000px !important;
 }

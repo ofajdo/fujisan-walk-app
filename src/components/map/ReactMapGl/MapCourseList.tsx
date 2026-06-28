@@ -27,7 +27,7 @@ export function MapCourse({
   const mapRef = React.useRef<MapRef | null>(null);
 
   const handleLoad = React.useCallback(() => {
-    const map = MapUtils(mapRef);
+    MapUtils(mapRef);
   }, []);
 
   return (
@@ -85,11 +85,11 @@ const CourseRouteMapCourse = ({
   const items = useLiveQuery(() => coursesDB.items.toArray()) || [];
 
   React.useEffect(() => {
-    setViewState({
-      ...viewState,
+    setViewState((current) => ({
+      ...current,
       longitude: center[0],
       latitude: center[1],
-    });
+    }));
   }, [center]);
 
   const [popupInfo, setPopupInfo] = React.useState<Course | null>(null);
@@ -100,11 +100,19 @@ const CourseRouteMapCourse = ({
         if (!position) {
           position = course.startingPoint.place;
         }
+        if (!position) return null;
+
+        const longitude = Number(position.longitude);
+        const latitude = Number(position.latitude);
+        if (!Number.isFinite(longitude) || !Number.isFinite(latitude)) {
+          return null;
+        }
+
         return (
           <React.Fragment key={course.id}>
             <Marker
-              longitude={Number(position?.longitude)}
-              latitude={Number(position?.latitude)}
+              longitude={longitude}
+              latitude={latitude}
               onClick={(e) => {
                 e.originalEvent.stopPropagation();
                 setPopupInfo(course);
@@ -120,8 +128,8 @@ const CourseRouteMapCourse = ({
             </Marker>
             {popupInfo?.id === course.id && (
               <Popup
-                longitude={Number(position?.longitude)}
-                latitude={Number(position?.latitude)}
+                longitude={longitude}
+                latitude={latitude}
                 anchor="top"
                 onClose={() => setPopupInfo(null)}
               >
@@ -135,9 +143,9 @@ const CourseRouteMapCourse = ({
                     </span>
                     {course.districts}地区
                     {!!items?.some((cou) => cou.id === course.id) && (
-                      <div className="text-green-500 text-lg">
+                      <span className="text-green-500 text-lg">
                         <FaCircleCheck />
-                      </div>
+                      </span>
                     )}
                   </p>
                   <p className="font-medium text-md text-balance">

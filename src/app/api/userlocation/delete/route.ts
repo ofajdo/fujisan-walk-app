@@ -5,12 +5,9 @@ import { DeleteUserLocation } from "@/data/users";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const locationId = body.id;
+    const locationId = typeof body.id === "string" ? body.id : null;
 
-    const user = await GetUser().catch((err) => {
-      console.log(err);
-      return null;
-    });
+    const user = await GetUser().catch(() => null);
 
     if (user?.id && locationId) {
       await DeleteUserLocation({
@@ -22,13 +19,13 @@ export async function POST(req: NextRequest) {
     } else {
       return NextResponse.json(
         { success: false, error: "User not found or invalid location id" },
-        { status: 400 }
+        { status: 400 },
       );
     }
   } catch (error) {
     return NextResponse.json(
       { success: false, error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

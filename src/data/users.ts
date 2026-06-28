@@ -21,9 +21,9 @@ export const PostUserLocations = async ({
     };
   });
 
-  if (!userLocationData) return;
+  if (userLocationData.length === 0) return;
 
-  const createUserLocation = await prisma.userLocation.createMany({
+  await prisma.userLocation.createMany({
     data: userLocationData,
     skipDuplicates: true,
   });
@@ -50,7 +50,7 @@ export const DeleteUserLocation = async ({
   id: string;
   user: string;
 }) => {
-  const deleteUserLocation = await prisma.userLocation.deleteMany({
+  await prisma.userLocation.deleteMany({
     where: {
       userId: user,
       locationId: id,
@@ -65,7 +65,6 @@ export const PostUserCourses = async ({
   items: { id: string; achievedAt?: Date }[];
   user: string;
 }) => {
-  console.log(items);
   const userCourseData = items.map((i) => {
     return {
       userId: user,
@@ -74,9 +73,9 @@ export const PostUserCourses = async ({
     };
   });
 
-  if (!userCourseData) return;
+  if (userCourseData.length === 0) return;
 
-  const createUserCourse = await prisma.userCourse.createMany({
+  await prisma.userCourse.createMany({
     data: userCourseData,
     skipDuplicates: true,
   });
@@ -103,7 +102,7 @@ export const DeleteUserCourses = async ({
   id: string;
   user: string;
 }) => {
-  const deleteUserLocation = await prisma.userCourse.deleteMany({
+  await prisma.userCourse.deleteMany({
     where: {
       userId: user,
       courseId: id,

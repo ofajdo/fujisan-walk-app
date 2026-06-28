@@ -187,24 +187,21 @@ const CourseRouteMapCourse = ({
   });
 
   React.useEffect(() => {
-    setViewState({
-      ...viewState,
+    setViewState((current) => ({
+      ...current,
       longitude: center[0],
       latitude: center[1],
-    });
+    }));
   }, [center]);
+
   React.useEffect(() => {
-    if (!is3D)
-      setViewState({
-        ...viewState,
-        pitch: 0,
-      });
-    if (is3D)
-      setViewState({
-        ...viewState,
-        pitch: 45,
-      });
+    setViewState((current) => ({
+      ...current,
+      pitch: is3D ? 45 : 0,
+    }));
   }, [is3D]);
+
+  if (!course.startingPoint.place) return null;
 
   return (
     <MapCourse

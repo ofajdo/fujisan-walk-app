@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import { SyncUserCourse, SyncUserLocation } from "@/components/Sync";
 import { Analytics } from "@vercel/analytics/next";
 import { AuthSessionProvider } from "@/components/SessionProvider";
 import { auth } from "@/auth";
-
-const notoSansJP = Noto_Sans_JP({
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "富士宮市歩く博物館デジタル",
@@ -27,7 +22,7 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <html lang="ja">
-      <body suppressHydrationWarning className={notoSansJP.className}>
+      <body suppressHydrationWarning>
         <SyncUserLocation>
           <SyncUserCourse>
             <AuthSessionProvider session={session}>
